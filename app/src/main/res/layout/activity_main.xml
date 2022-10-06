@@ -4,82 +4,195 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
+    android:background="#E2E2E2"
+    android:weightSum="11"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@color/white"
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginLeft="13dp"
+            android:layout_centerVertical="true"
             android:text="wal"
             android:textStyle="italic"
             android:letterSpacing="0.05"
             android:fontFamily="sans-serif-medium"
-            android:textColor="@color/black"
+            android:textColor="#444444"
             android:textSize="23dp" />
 
         <TextView
+            android:id="@+id/title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
             android:layout_marginLeft="1dp"
+            android:layout_toRightOf="@+id/title1"
+            android:layout_centerVertical="true"
             android:text="KING"
             android:letterSpacing="0.05"
             android:textStyle="italic"
             android:fontFamily="sans-serif-medium"
             android:textColor="#3DB7CC"
-            android:textSize="27dp" />
-    </LinearLayout>
+            android:textSize="26dp" />
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:layout_toLeftOf="@+id/setting"
+            android:alpha="0.6"
+            android:scaleType="fitCenter"
+            android:src="@drawable/profile" />
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:alpha="0.6"
+            android:layout_marginRight="13dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/setting"/>
+    </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="391dp"
-        android:layout_height="516dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="8"
         android:padding="22dp"
-        android:background="@color/white">
+        android:background="@drawable/layout">
         <TextView
             android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="user01 님"
-            android:textSize="23dp"
+            android:textSize="18dp"
             android:textStyle="bold"/>
+        <ImageView
+            android:id="@+id/p_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/user"
+            android:scaleType="fitCenter"
+            android:src="@drawable/point"/>
         <TextView
             android:id="@+id/point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_alignTop="@+id/p_icon"
             android:layout_below="@+id/user"
-            android:text="P 1,220"
-            android:textSize="23dp"
+            android:layout_toRightOf="@+id/p_icon"
+            android:text="1,220"
+            android:textSize="18dp"
             android:textStyle="bold"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_marginTop="-30dp"
+            android:layout_below="@+id/point"
+            android:layout_centerHorizontal="true"
+            android:indeterminateOnly="false"
+            android:progress="60"
+            android:progressDrawable="@drawable/circle" />
+
+        <ImageView
+            android:id="@+id/user_profile"
+            android:layout_width="100dp"
+            android:layout_height="99dp"
+            android:layout_alignStart="@+id/progress_bar"
+            android:layout_alignTop="@+id/progress_bar"
+            android:layout_alignEnd="@+id/progress_bar"
+            android:layout_alignBottom="@+id/progress_bar"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="67dp"
+            android:layout_marginEnd="65dp"
+            android:layout_marginBottom="64dp"
+            android:src="@drawable/user_image" />
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/user_profile"
+            android:layout_marginTop="-20dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/level"
+            android:text="12"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/gift"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/gift"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/reward"
+            android:layout_alignTop="@+id/reward"/>
+
+        <Button
+            android:id="@+id/reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/progress_bar"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button"
+            android:letterSpacing="0.05"
+            android:text="보상 받기"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
-
     <RelativeLayout
-        android:layout_width="391dp"
-        android:layout_height="118dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:padding="22dp">
+        android:layout_weight="2"
+        android:background="@drawable/layout">
 
+        <ImageView
+            android:id="@+id/marker"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/marker"/>
         <TextView
             android:id="@+id/challenge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/marker"
+            android:layout_alignTop="@+id/marker"
             android:text="챌린지"
             android:textColor="#5586EB"
-            android:textSize="30dp"
+            android:textSize="26dp"
             android:textStyle="bold" />
 
         <TextView
@@ -87,8 +200,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/challenge"
+            android:layout_alignTop="@+id/marker"
             android:text=" 시작"
-            android:textSize="30dp"
+            android:textSize="26dp"
             android:textStyle="bold" />
 
         <TextView
@@ -97,10 +211,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/start"
             android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/marker"
             android:textStyle="bold"
             android:textColor="#A6A6A6"
             android:text="목표 지점까지 걷고 포인트를 받으세요"
-            android:textSize="18dp"/>
+            android:textSize="15dp"/>
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:alpha="0.4"/>
     </RelativeLayout>
 
 </LinearLayout>
