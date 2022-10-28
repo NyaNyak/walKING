@@ -1,233 +1,440 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E2E2E2"
-    android:weightSum="11"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintVertical_weight="1"
         android:background="@color/white"
-        android:padding="10dp">
+        android:padding="10dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="13dp"
             android:layout_centerVertical="true"
-            android:text="wal"
-            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="15dp"
             android:letterSpacing="0.05"
-            android:fontFamily="sans-serif-medium"
+            android:text="wal"
             android:textColor="#444444"
-            android:textSize="23dp" />
+            android:textSize="25dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_toRightOf="@+id/title1"
             android:layout_centerVertical="true"
-            android:text="KING"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:letterSpacing="0.05"
-            android:textStyle="italic"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="#3DB7CC"
-            android:textSize="26dp" />
+            android:text="KING"
+            android:textColor="#8CD4D2"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/title1"
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/profile"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="18dp"
-            android:layout_toLeftOf="@+id/setting"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:alpha="0.6"
             android:scaleType="fitCenter"
-            android:src="@drawable/profile" />
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/profile"
+            app:layout_constraintEnd_toStartOf="@+id/ranking"
+            tools:ignore="MissingConstraints" />
+
         <ImageView
-            android:id="@+id/setting"
+            android:id="@+id/ranking"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:alpha="0.6"
-            android:layout_marginRight="13dp"
-            android:layout_alignParentRight="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="15dp"
+            android:alpha="0.8"
             android:scaleType="fitCenter"
-            android:src="@drawable/setting"/>
-    </RelativeLayout>
+            android:src="@drawable/trophy"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="8"
-        android:padding="22dp"
-        android:background="@drawable/layout">
-        <TextView
-            android:id="@+id/user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="user01 님"
-            android:textSize="18dp"
-            android:textStyle="bold"/>
-        <ImageView
-            android:id="@+id/p_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="5dp"
-            android:layout_below="@+id/user"
-            android:scaleType="fitCenter"
-            android:src="@drawable/point"/>
-        <TextView
-            android:id="@+id/point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/p_icon"
-            android:layout_below="@+id/user"
-            android:layout_toRightOf="@+id/p_icon"
-            android:text="1,220"
-            android:textSize="18dp"
-            android:textStyle="bold"/>
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
-            android:layout_marginTop="-30dp"
-            android:layout_below="@+id/point"
-            android:layout_centerHorizontal="true"
-            android:indeterminateOnly="false"
-            android:progress="60"
-            android:progressDrawable="@drawable/circle" />
-
-        <ImageView
-            android:id="@+id/user_profile"
-            android:layout_width="100dp"
-            android:layout_height="99dp"
-            android:layout_alignStart="@+id/progress_bar"
-            android:layout_alignTop="@+id/progress_bar"
-            android:layout_alignEnd="@+id/progress_bar"
-            android:layout_alignBottom="@+id/progress_bar"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="67dp"
-            android:layout_marginEnd="65dp"
-            android:layout_marginBottom="64dp"
-            android:src="@drawable/user_image" />
-
-        <TextView
-            android:id="@+id/level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/user_profile"
-            android:layout_marginTop="-20dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/level"
-            android:text="12"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-        <ImageView
-            android:id="@+id/gift"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/gift"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/reward"
-            android:layout_alignTop="@+id/reward"/>
-
-        <Button
-            android:id="@+id/reward"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/progress_bar"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/button"
-            android:letterSpacing="0.05"
-            android:text="보상 받기"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        app:layout_constraintVertical_weight="10"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/layout"
+        android:padding="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="2"
-        android:background="@drawable/layout">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout1"
+        app:layout_constraintBottom_toTopOf="@id/constraintLayout3">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:flow_verticalAlign="center"
+            app:layout_constraintVertical_weight="1.3"
+            android:id="@+id/userInfo"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintBottom_toTopOf="@+id/walkCount">
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/level"
+                android:paddingLeft="8dp"
+                android:paddingTop="2dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="3dp"
+                android:text="12"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/exp"
+                app:layout_constraintEnd_toStartOf="@+id/user"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Leopard"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/exp"
+                app:layout_constraintStart_toEndOf="@id/level"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/exp"
+                android:textStyle="bold"
+                android:textColor="#8E8E8E"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user"
+                app:layout_constraintBottom_toTopOf="@+id/levelBar"
+                android:text="40 percent"/>
+            <ProgressBar
+                android:id="@+id/levelBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="180dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exp"
+                app:layout_constraintBottom_toTopOf="@+id/point"
+                android:layout_height="12dp"
+                android:progress="40"
+                android:progressDrawable="@drawable/bar" />
+            <ImageView
+                android:id="@+id/p_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/levelBar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/point"/>
+            <TextView
+                android:id="@+id/point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/p_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/levelBar"
+                android:text="1601"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="3"
+            android:id="@+id/walkCount"
+            app:layout_constraintTop_toBottomOf="@+id/userInfo"
+            app:layout_constraintBottom_toTopOf="@+id/walkInfo">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="250dp"
+                android:layout_height="247dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:indeterminateOnly="false"
+                android:paddingBottom="0dp"
+                android:progress="15"
+                android:progressDrawable="@drawable/circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/user_profile"
+                android:layout_width="120dp"
+                android:layout_height="119dp"
+                android:src="@drawable/leopard_normal"
+                app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
+                app:layout_constraintEnd_toEndOf="@+id/progress_bar"
+                app:layout_constraintStart_toStartOf="@+id/progress_bar"
+                app:layout_constraintTop_toTopOf="@+id/progress_bar" />
+
+            <Button
+                android:id="@+id/reward"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button"
+                android:letterSpacing="0.05"
+                android:text="보상 받기"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/progress_bar"
+                app:layout_constraintStart_toStartOf="@id/progress_bar"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/gift"
+                android:layout_width="41dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="-2000dp"
+                android:layout_marginTop="-5dp"
+                android:src="@drawable/gift"
+                app:layout_constraintTop_toTopOf="@+id/reward"
+                app:layout_constraintTop_toBottomOf="@+id/reward"
+
+                app:layout_constraintEnd_toStartOf="@id/reward"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/walkInfo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="1.5"
+            app:layout_constraintTop_toBottomOf="@+id/walkCount"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/count"
+                android:textColor="#5586EB"
+                android:text="1557"
+                android:textStyle="bold"
+                android:layout_marginRight="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/walk"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/goal"
+                android:textSize="35dp"/>
+
+            <TextView
+                android:id="@+id/walk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="걸음"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#8E8E8E"
+                app:layout_constraintBottom_toBottomOf="@+id/count"
+                app:layout_constraintBottom_toTopOf="@+id/goal"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintLeft_toRightOf="@+id/count"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/count" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/goal"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#8E8E8E"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintRight_toLeftOf="@+id/goalCount"
+                app:layout_constraintTop_toBottomOf="@+id/walk"
+                app:layout_constraintBottom_toTopOf="@+id/dist"
+                android:text="목표: "/>
+
+            <TextView
+                android:id="@+id/goalCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10000"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#8E8E8E"
+                app:layout_constraintTop_toBottomOf="@+id/walk"
+                app:layout_constraintBottom_toTopOf="@+id/dist"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/goal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/distance"
+                android:text="1.01"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/dist"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textSize="30dp"/>
+
+            <TextView
+                android:id="@+id/dist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="km"
+                android:textSize="25dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintRight_toLeftOf="@id/calorie"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/distance"
+                />
+            <TextView
+                android:id="@+id/calorie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cal"
+                app:layout_constraintLeft_toRightOf="@+id/dist"
+                android:textStyle="bold"
+                android:text="80"
+                android:textSize="30dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/calorie"
+                android:text="kcal"
+                android:textSize="20dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="2"
+        android:background="@drawable/layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout2">
 
         <ImageView
             android:id="@+id/marker"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="15dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/marker"/>
+            android:src="@drawable/marker" />
         <TextView
-            android:id="@+id/challenge"
+            android:id="@+id/shop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/marker"
-            android:layout_alignTop="@+id/marker"
-            android:text="챌린지"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@+id/marker"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:text="포인트"
             android:textColor="#5586EB"
-            android:textSize="26dp"
+            app:layout_constraintBottom_toTopOf="@id/description"
+            android:textSize="23dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/start"
+            android:id="@+id/use"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/challenge"
-            android:layout_alignTop="@+id/marker"
-            android:text=" 시작"
-            android:textSize="26dp"
-            android:textStyle="bold" />
+            android:text=" 사용"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintStart_toEndOf="@+id/shop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/start"
-            android:layout_marginTop="3dp"
-            android:layout_toRightOf="@+id/marker"
-            android:textStyle="bold"
-            android:textColor="#A6A6A6"
-            android:text="목표 지점까지 걷고 포인트를 받으세요"
-            android:textSize="15dp"/>
-
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/shop"
+            app:layout_constraintStart_toEndOf="@+id/marker"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="더 많은 포인트를 얻거나 뱃지를 수집하세요!"
+            android:textColor="#8E8E8E"
+            android:textSize="14dp"
+            android:textStyle="bold" />
         <ImageView
             android:id="@+id/arrow"
-            android:layout_width="35dp"
+            android:layout_width="30dp"
             android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="15dp"
+            android:alpha="0.4"
             android:scaleType="fitCenter"
-            android:src="@drawable/arrow"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:alpha="0.4"/>
-    </RelativeLayout>
+            android:src="@drawable/arrow" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

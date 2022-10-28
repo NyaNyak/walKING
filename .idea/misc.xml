@@ -3,11 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/bar.xml" value="0.178" />
         <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/button.xml" value="0.1415" />
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/buy_button.xml" value="0.204" />
         <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/circle.xml" value="0.2355" />
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/item.xml" value="0.23" />
         <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/layout.xml" value="0.2255" />
         <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/level.xml" value="0.1555" />
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/drawable/user_rank.xml" value="0.203" />
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/font/custom_font_family.xml" value="0.22625580413676658" />
         <entry key="..\:/AndroidProject/walKING/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/layout/point_shop.xml" value="0.264" />
+        <entry key="..\:/AndroidProject/walKING/app/src/main/res/layout/ranking_page.xml" value="0.264" />
       </map>
     </option>
   </component>
