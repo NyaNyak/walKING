@@ -225,7 +225,7 @@
                 android:background="@drawable/button"
                 android:letterSpacing="0.05"
                 android:text="보상 받기"
-                android:textColor="@color/white"
+                android:textColor="@drawable/button_text"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
