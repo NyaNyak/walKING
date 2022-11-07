@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".PointShop"/>
         <activity android:name=".RankingPage"/>
+        <activity android:name=".UserPage"/>
     </application>
 
 </manifest>

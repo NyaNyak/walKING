@@ -10,12 +10,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView ranking, gift;
+    ImageView profilePage, ranking, gift;
     ConstraintLayout goToShop;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        profilePage = (ImageView) findViewById(R.id.profilePage);
+        profilePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserPage.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.vertical_enter,R.anim.none);
+            }
+        });
+
         ranking = (ImageView) findViewById(R.id.ranking);
         ranking.setOnClickListener(new View.OnClickListener() {
             @Override
