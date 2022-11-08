@@ -24,8 +24,8 @@
 
         <ImageView
             android:id="@+id/goBack_shop"
-            android:layout_width="35dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="45dp"
             android:src="@drawable/arrow2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             android:layout_marginStart="7dp"
             android:text="포인트 상점"
             android:textColor="#5586EB"
-            android:textSize="25dp"
+            android:textSize="23dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/goBack_shop"

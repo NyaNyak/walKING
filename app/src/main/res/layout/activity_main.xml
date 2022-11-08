@@ -371,7 +371,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintVertical_weight="2"
-        android:background="@drawable/layout"
+        android:background="@drawable/layout_click"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constraintLayout2">
 

@@ -25,7 +25,9 @@
         <activity android:name=".PointShop"/>
         <activity android:name=".RankingPage"/>
         <activity android:name=".UserPage"/>
+        <activity android:name=".SetWalkGoal"/>
         <activity android:name=".SignIn"/>
+        <activity android:name=".LogIn"/>
     </application>
 
 </manifest>
