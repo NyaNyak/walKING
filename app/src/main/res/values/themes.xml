@@ -24,5 +24,6 @@
         <item name="android:textColorPrimary">#525252</item>
         <item name="background">@color/black</item>
         <item name="android:textSize">20dp</item>
+        <item name="android:fontFamily">@font/custom_font_family</item>
     </style>
 </resources>

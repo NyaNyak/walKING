@@ -14,7 +14,7 @@
         android:theme="@style/Theme.WalKING"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".LogIn"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
         <activity android:name=".UserPage"/>
         <activity android:name=".SetWalkGoal"/>
         <activity android:name=".SignIn"/>
-        <activity android:name=".LogIn"/>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
