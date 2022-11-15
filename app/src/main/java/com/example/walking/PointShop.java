@@ -69,7 +69,7 @@ public class PointShop extends AppCompatActivity {
     }
 
     //경험치 구매 전용
-    public void showDialogShop(int percent){
+    public void showDialogShop(float percent){
         TextView dialogText = dialog.findViewById(R.id.dialogText);
         dialogText.setText("구매하시겠습니까?");
         dialog.show();
@@ -87,7 +87,8 @@ public class PointShop extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Toast.makeText(getApplicationContext(),"경험치 " + percent+"% 획득!", Toast.LENGTH_SHORT).show();
+                int getExp = Math.round(percent/100*1000);
+                Toast.makeText(getApplicationContext(),"경험치 " + getExp+" 획득!", Toast.LENGTH_SHORT).show();
             }
         });
     }
