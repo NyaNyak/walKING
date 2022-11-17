@@ -61,6 +61,7 @@ public class LogIn extends AppCompatActivity {
                         finish();
                     }
                     else{
+                        new Api.HttpAsyncTask().putLogin(id, password);
                         Toast.makeText(getApplicationContext(),"아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
