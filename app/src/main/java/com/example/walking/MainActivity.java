@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.commit();
 
+                float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
+                //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
+                walkProgress.setProgress((int)progress);
+
                 Intent intent = new Intent(getApplicationContext(), UserPage.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.vertical_enter,R.anim.none);
@@ -126,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.commit();
+
+                float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
+                //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
+                walkProgress.setProgress((int)progress);
 
                 Intent intent = new Intent(getApplicationContext(), RankingPage.class);
                 startActivity(intent);
@@ -142,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.commit();
 
+                float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
+                //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
+                walkProgress.setProgress((int)progress);
+
                 Intent intent = new Intent(getApplicationContext(), LogIn.class);
                 startActivity(intent);
                 finish();
@@ -156,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.commit();
+
+                float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
+                //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
+                walkProgress.setProgress((int)progress);
 
                 Intent intent = new Intent(getApplicationContext(), PointShop.class);
                 startActivity(intent);
