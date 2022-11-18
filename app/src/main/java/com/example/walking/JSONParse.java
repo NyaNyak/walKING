@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class JSONParse {
-    static HashMap<String, String> JsonParse(String jsonStr) {
+    public static HashMap<String, String> JsonParse(String jsonStr) {
         HashMap<String, String> res = new HashMap<>();
         try {
             JSONObject jo = new JSONObject(jsonStr);

@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walking.ServerApi.PutLogin;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +54,7 @@ public class LogIn extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "아이디와 비밀번호를 입력해 주세요.",Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        result = new Api.HttpAsyncTask().putLogin(id, password);
+                        result = new PutLogin().putLogin(id, password);
                         if (result.containsKey("detail")){
                             Toast.makeText(getApplicationContext(), result.get("detail"), Toast.LENGTH_SHORT).show();
                         } else {
