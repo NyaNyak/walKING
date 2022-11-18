@@ -52,10 +52,19 @@ public class SelectBadge extends AppCompatActivity {
                             index2 = j;
                             if (index != index2) {
                                 btnArray[index2].setSelected(false);
+                                btnArray[index2].clearAnimation();
                             }
                         }
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                         btnArray[index].startAnimation(scaleUp);
+                        selectedIdx = index;
+                        for (int j = 0; j < btnId.length; j++) {
+                            final int index2;
+                            index2 = j;
+                            if (index != index2) {
+                                btnArray[index2].clearAnimation();
+                            }
+                        }
                         btnArray[index].performClick();
                     }
 
