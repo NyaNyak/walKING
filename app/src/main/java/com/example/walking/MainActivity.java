@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +29,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView profilePage, ranking, userProfile, gift;
-    TextView count;
+    TextView count, goalCount;
     Button reward;
+    ProgressBar walkProgress;
     ConstraintLayout goToShop;
     SensorManager sensorManager;
     Sensor stepCountSensor;
@@ -51,14 +53,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         goToShop = (ConstraintLayout) findViewById(R.id.constraintLayout3);
         reward = (Button) findViewById(R.id.reward);
         count = (TextView) findViewById(R.id.count);
+        goalCount = (TextView) findViewById(R.id.goalCount);
+        walkProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
         //로컬에 저장된 걸음 수를 불러와 레이아웃에 표시
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
         saveSteps = todaySteps.getString("steps", "0");
         saveCounterSteps = todaySteps.getString("counterSteps", "0");
         counterSteps = Integer.parseInt(saveCounterSteps);
-        //currentSteps = Integer.parseInt(saveSteps);
+        currentSteps = Integer.parseInt(saveSteps);
         count.setText(saveSteps);
+
+        //걸음 목표 달성 정도 프로그레스바로 표시
+        float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
+        //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
+        walkProgress.setProgress((int)progress);
 
         //걸음 센서 사용을 위해 퍼미션체크
         if(ContextCompat.checkSelfPermission(this,
@@ -79,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         reward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                walkProgress.setProgress(20);
                 currentSteps = 0;
                 counterSteps = 0;
                 //로컬에 0으로 초기화된 걸음수 저장
@@ -88,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.commit();
                 count.setText(String.valueOf(currentSteps));
+                //walkProgress.setProgress(0);
             }
         });
 
@@ -163,6 +174,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void onStop(){
+        SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = todaySteps.edit();
+        editor.putString("steps", Integer.toString(currentSteps));
+        editor.putString("counterSteps", Integer.toString(counterSteps));
+        editor.commit();
         super.onStop();
         if(sensorManager != null){
             //센서 멈춤
@@ -188,6 +204,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //즉 현재 걸음 수는 센서가 측정한 총 걸음에서 기준값으로 저장해둔 counterSteps을 빼서 구한다.
             currentSteps = (int) sensorEvent.values[0] - counterSteps;
             count.setText(Integer.toString(currentSteps));
+
+            float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
+            //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
+            walkProgress.setProgress((int)progress);
+
             Log.i("log: ", "New step detected by STEP_COUNTER sensor. Total step count: " + currentSteps);
             /*
             if(sensorEvent.values[0] == 1.0f){
