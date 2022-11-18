@@ -31,7 +31,7 @@ public class SignIn extends AppCompatActivity {
     //정규표현식
     String idRegex = "^[a-z]{1}[a-z0-9_]{4,14}$";
     String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
-    String nameRegex = "^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,}\\$";
+    String nameRegex = "^[가-힣a-zA-Z0-9._ -]{2,}\\$";
     Pattern idPattern = Pattern.compile(idRegex);
     Pattern pwPattern = Pattern.compile(pwRegex);
     Pattern namePattern = Pattern.compile(nameRegex);
