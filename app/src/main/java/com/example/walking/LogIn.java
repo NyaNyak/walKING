@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class LogIn extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class LogIn extends AppCompatActivity {
     Button logInButton, goSignIn;
     String id, password;
     String idAuto, passwordAuto;
+    HashMap<String, String> result;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,29 @@ public class LogIn extends AppCompatActivity {
                     if(id.equals("") || password.equals("")){
                         Toast.makeText(getApplicationContext(), "아이디와 비밀번호를 입력해 주세요.",Toast.LENGTH_SHORT).show();
                     }
+                    else {
+                        result = new Api.HttpAsyncTask().putLogin(id, password);
+                        if (result.containsKey("detail")){
+                            Toast.makeText(getApplicationContext(), result.get("detail"), Toast.LENGTH_SHORT).show();
+                        } else {
+                            //입력한 아이디, 비밀번호 로컬에 저장
+                            SharedPreferences autoLogIn = getSharedPreferences("autoLogIn", Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = autoLogIn.edit();
+                            editor.putString("id", id);
+                            editor.putString("password", password);
+                            editor.commit();
+
+                            //로그인 성공 메시지
+                            Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
+
+                            //홈화면으로 이동
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                    /**
                     else if (id.equals("admin") && password.equals("1234")) {
                         //입력한 아이디, 비밀번호 로컬에 저장
                         SharedPreferences autoLogIn = getSharedPreferences("autoLogIn", Activity.MODE_PRIVATE);
@@ -61,9 +87,11 @@ public class LogIn extends AppCompatActivity {
                         finish();
                     }
                     else{
-                        new Api.HttpAsyncTask().putLogin(id, password);
-                        Toast.makeText(getApplicationContext(),"아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                        result = new Api.HttpAsyncTask().putLogin(id, password);
+                        System.out.println(result.size());
+                        Toast.makeText(getApplicationContext(), "로그인 성공 : "+result.get("detail"), Toast.LENGTH_SHORT).show();
                     }
+                     */
                 }
             });
         }
