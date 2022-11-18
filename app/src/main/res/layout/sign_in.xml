@@ -123,7 +123,7 @@
                 android:layout_height="60dp"
                 android:padding="15dp"
                 android:background="@drawable/item"
-                android:hint="한글 7자 이하, 영문/숫자 14자 이하"
+                android:hint="한글 2~7자, 영문/숫자 2~14자"
                 android:maxLength="14"
                 android:singleLine="true"
                 android:layout_marginTop="15dp"

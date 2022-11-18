@@ -31,8 +31,10 @@ public class SignIn extends AppCompatActivity {
     //정규표현식
     String idRegex = "^[a-z]{1}[a-z0-9_]{4,14}$";
     String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
+    String nameRegex = "^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,}\\$";
     Pattern idPattern = Pattern.compile(idRegex);
     Pattern pwPattern = Pattern.compile(pwRegex);
+    Pattern namePattern = Pattern.compile(nameRegex);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,8 @@ public class SignIn extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 } else if (name.equals("")){
                     Toast.makeText(getApplicationContext(), "닉네임을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else if(!namePattern.matcher(name).matches()){
+                    Toast.makeText(getApplicationContext(), "사용할 수 없는 닉네임입니다.", Toast.LENGTH_SHORT).show();
                 } else if (gender.equals("")){
                     Toast.makeText(getApplicationContext(), "성별을 선택해주세요.", Toast.LENGTH_SHORT).show();
                 } else{
