@@ -35,12 +35,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ConstraintLayout goToShop;
     SensorManager sensorManager;
     Sensor stepCountSensor;
-    String saveSteps, saveCounterSteps;
+    String saveSteps, saveCounterSteps, saveInitSteps;
 
     //현재 걸음 수를 저장하는 변수
     int currentSteps = 0;
     //하루 걸음수를 계산하기 위해 TYPE_STEP_COUNTER 센서가 측정한 걸음수(휴대폰 부팅 이후부터의 총 걸음수)를 저장하는 변수
     int counterSteps = 0;
+    //휴대폰 부팅 여부에 따라서 설정
+    int initSteps = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -60,8 +62,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
         saveSteps = todaySteps.getString("steps", "0");
         saveCounterSteps = todaySteps.getString("counterSteps", "0");
+        saveInitSteps = todaySteps.getString("initSteps", "0");
+
         counterSteps = Integer.parseInt(saveCounterSteps);
         currentSteps = Integer.parseInt(saveSteps);
+        initSteps = Integer.parseInt(saveInitSteps);
         count.setText(saveSteps);
 
         //걸음 목표 달성 정도 프로그레스바로 표시
@@ -91,14 +96,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 walkProgress.setProgress(20);
                 currentSteps = 0;
                 counterSteps = 0;
+                initSteps = 0;
                 //로컬에 0으로 초기화된 걸음수 저장
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
                 count.setText(String.valueOf(currentSteps));
-                //walkProgress.setProgress(0);
+                walkProgress.setProgress(0);
             }
         });
 
@@ -110,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
@@ -129,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
@@ -148,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
@@ -167,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
@@ -194,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SharedPreferences.Editor editor = todaySteps.edit();
         editor.putString("steps", Integer.toString(currentSteps));
         editor.putString("counterSteps", Integer.toString(counterSteps));
+        editor.putString("initSteps", Integer.toString(initSteps));
         editor.commit();
         super.onStop();
         if(sensorManager != null){
@@ -204,21 +216,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
+        SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
         if(sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
             //현재까지의 걸음수를 0으로 초기화 했을때의 동작 (초기화 버튼을 클릭하거나, 자정이 되었거나 - 이후 구현할것)
             if(counterSteps < 1){
                 //counterSteps : 센서가 측정한 휴대폰 부팅 이후부터의 총 걸음수를 기준값으로 사용하기 위한 것
                 counterSteps = (int) sensorEvent.values[0];
                 //로컬에 값 저장
-                SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
+
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.commit();
+            }
+            //휴대폰 부팅 시 센서가 초기화됨. 따라서 현재 걸음 수 계산에 쓰이는 변수들을 적절히 조정
+            String lastCount = todaySteps.getString("counterSteps", "0");
+            if(sensorEvent.values[0] <= Integer.parseInt(lastCount)){
+                counterSteps = (int) sensorEvent.values[0];
+                initSteps = Integer.parseInt(todaySteps.getString("steps", "0"));
+                SharedPreferences.Editor editor = todaySteps.edit();
+                editor.putString("counterSteps", Integer.toString(counterSteps));
+                editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
             }
             //[현재 걸음수를 표시하기 위한 수식]
             //걸음 센서는 휴대폰을 종료하지 않는 이상, 앱 종료 여부와 상관없이 계속 걸음수를 누적중.
             //즉 현재 걸음 수는 센서가 측정한 총 걸음에서 기준값으로 저장해둔 counterSteps을 빼서 구한다.
-            currentSteps = (int) sensorEvent.values[0] - counterSteps;
+            currentSteps = initSteps + (int) sensorEvent.values[0] - counterSteps;
             count.setText(Integer.toString(currentSteps));
 
             float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
@@ -248,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SharedPreferences.Editor editor = todaySteps.edit();
         editor.putString("steps", Integer.toString(currentSteps));
         editor.putString("counterSteps", Integer.toString(counterSteps));
+        editor.putString("initSteps", Integer.toString(initSteps));
         editor.commit();
         super.finish();
     }
