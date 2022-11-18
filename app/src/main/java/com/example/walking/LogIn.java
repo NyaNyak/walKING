@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.walking.ServerApi.PutLogin;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LogIn extends AppCompatActivity {
     EditText idInput, pwInput;
@@ -103,7 +102,7 @@ public class LogIn extends AppCompatActivity {
         goSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                Intent intent = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.vertical_enter_reverse, R.anim.none);
             }

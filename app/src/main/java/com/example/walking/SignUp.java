@@ -8,7 +8,6 @@ import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -20,7 +19,7 @@ import com.example.walking.ServerApi.PostSignIn;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-public class SignIn extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
     EditText idSet, pwSet, pwCheck, nameSet;
     RadioGroup genderSet;
     Button signInButton;
@@ -39,7 +38,7 @@ public class SignIn extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in);
+        setContentView(R.layout.sign_up);
 
         idSet = (EditText) findViewById(R.id.idSet);
         pwSet = (EditText) findViewById(R.id.pwSet);

@@ -30,7 +30,7 @@
         <activity android:name=".UserPage"/>
         <activity android:name=".SelectBadge"/>
         <activity android:name=".SetWalkGoal"/>
-        <activity android:name=".SignIn"/>
+        <activity android:name=".SignUp"/>
         <activity android:name=".MainActivity"/>
     </application>
 
