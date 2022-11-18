@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.walking.ServerApi.PostSignIn;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class SignIn extends AppCompatActivity {
     EditText idSet, pwSet, pwCheck, nameSet;
@@ -25,6 +27,12 @@ public class SignIn extends AppCompatActivity {
     String id, pw, pwChk, name;
     HashMap<String, String> result;
     String gender = "";
+
+    //정규표현식
+    String idRegex = "^[a-z]{1}[a-z0-9_]{4,14}$";
+    String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
+    Pattern idPattern = Pattern.compile(idRegex);
+    Pattern pwPattern = Pattern.compile(pwRegex);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +43,8 @@ public class SignIn extends AppCompatActivity {
         pwSet = (EditText) findViewById(R.id.pwSet);
         pwCheck = (EditText) findViewById(R.id.pwCheck);
         nameSet = (EditText) findViewById(R.id.nameSet);
+        InputFilter[] byteFilter = new InputFilter[]{new ByteLengthFilter(14, "KSC5601")};
+        nameSet.setFilters(byteFilter);
         genderSet = (RadioGroup) findViewById(R.id.genderSet);
         signInButton = (Button) findViewById(R.id.signInButton);
 
@@ -49,8 +59,12 @@ public class SignIn extends AppCompatActivity {
 
                 if (id.equals("")){
                     Toast.makeText(getApplicationContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else if(!idPattern.matcher(id).matches()){
+                    Toast.makeText(getApplicationContext(), "아이디 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
                 } else if (pw.equals("")){
                     Toast.makeText(getApplicationContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else if(!pwPattern.matcher(pw).matches()){
+                    Toast.makeText(getApplicationContext(), "비밀번호 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
                 } else if (pwChk.equals("")){
                     Toast.makeText(getApplicationContext(), "비밀번호를 한번 더 입력해주세요.", Toast.LENGTH_SHORT).show();
                 } else if (!pw.equals(pwChk)){
