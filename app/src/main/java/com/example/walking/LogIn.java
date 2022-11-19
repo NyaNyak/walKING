@@ -66,11 +66,15 @@ public class LogIn extends AppCompatActivity {
                             editor.commit();
 
 
+                            //user_info 공간에 유저 정보를 저장할 변수 선언
                             SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                             SharedPreferences.Editor editor1 = pref.edit();
-
+                            //userInfo 사용을 위해 선언
                             UserInfo save = new UserInfo();
-                            save.userInfo(pref, editor1, result);
+                            //인자로 싹다 넘겨줌... 다시보니 pref는 따로 넘겨줄 필요가 없음 editor만 넘겨준다
+                            save.userInfo(editor1, result);
+
+                            //TODO 회원가입에도 위와 동일한 부분 작성 필요!
 
                             //로그인 성공 메시지
                             Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
