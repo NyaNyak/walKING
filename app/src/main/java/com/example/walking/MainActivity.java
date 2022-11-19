@@ -25,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     SensorManager sensorManager;
     Sensor stepCountSensor;
     String saveSteps, saveCounterSteps, saveInitSteps;
+
+    //유저 정보 변수
+    TextView level, userName, exp, point, distance, calorie;
 
     //현재 걸음 수를 저장하는 변수
     int currentSteps = 0;
@@ -57,6 +62,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         count = (TextView) findViewById(R.id.count);
         goalCount = (TextView) findViewById(R.id.goalCount);
         walkProgress = (ProgressBar) findViewById(R.id.progress_bar);
+
+        //유저 정보
+        level = (TextView) findViewById(R.id.level);
+        userName = (TextView) findViewById(R.id.user);
+        exp = (TextView) findViewById(R.id.exp);
+        point = (TextView) findViewById(R.id.point);
+        distance = (TextView) findViewById(R.id.distance);
+        calorie = (TextView) findViewById(R.id.calorie);
+
+        //유저 정보 화면에 뿌리기
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        level.setText(pref.getString("level",""));
+        userName.setText(pref.getString("user_name",""));
+        //exp는 일단 넘기고
+        point.setText(pref.getString("point",""));
+        distance.setText(pref.getString("total_dist",""));
+        calorie.setText(pref.getString("total_kcal",""));
+
+
+
 
         //로컬에 저장된 걸음 수를 불러와 레이아웃에 표시
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);

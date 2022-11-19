@@ -58,14 +58,23 @@ public class LogIn extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), result.get("detail"), Toast.LENGTH_SHORT).show();
                         } else {
                             //입력한 아이디, 비밀번호 로컬에 저장
+
                             SharedPreferences autoLogIn = getSharedPreferences("autoLogIn", Activity.MODE_PRIVATE);
                             SharedPreferences.Editor editor = autoLogIn.edit();
                             editor.putString("id", id);
                             editor.putString("password", password);
                             editor.commit();
 
+
+                            SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor1 = pref.edit();
+
+                            UserInfo save = new UserInfo();
+                            save.userInfo(pref, editor1, result);
+
                             //로그인 성공 메시지
                             Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
 
                             //홈화면으로 이동
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);

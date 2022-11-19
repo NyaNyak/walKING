@@ -168,6 +168,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
+                android:paddingRight="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/point"/>
             <TextView
