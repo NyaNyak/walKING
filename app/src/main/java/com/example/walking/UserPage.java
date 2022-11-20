@@ -43,6 +43,8 @@ public class UserPage extends AppCompatActivity {
         goBackUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -122,6 +124,14 @@ public class UserPage extends AppCompatActivity {
                 System.exit(0);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
