@@ -25,10 +25,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView profilePage, ranking, userProfile, gift;
     TextView count, goalCount;
@@ -41,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     //유저 정보 변수
     TextView level, userName, exp, point, distance, calorie;
+
+    //뒤로가기 두번으로 앱 종료를 위한 변수
+    long backKeyPressedTime = 0;
 
     //현재 걸음 수를 저장하는 변수
     int currentSteps = 0;
@@ -301,4 +300,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        if (System.currentTimeMillis() > backKeyPressedTime + 2500){
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), "한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else{
+            finishAffinity();
+        }
+    }
 }
