@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         point.setText(pref.getString("point",""));
         distance.setText(pref.getString("total_dist",""));
         calorie.setText(pref.getString("total_kcal",""));
+        goalCount.setText(pref.getString("walk_goal", ""));
 
 
 
