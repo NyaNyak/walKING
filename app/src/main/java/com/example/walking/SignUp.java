@@ -88,6 +88,12 @@ public class SignUp extends AppCompatActivity {
                         editor.putString("password", pw);
                         editor.commit();
 
+                        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor1 = pref.edit();
+
+                        UserInfo save = new UserInfo();
+                        save.userInfo(editor1, result);
+
                         //로그인 성공 메시지
                         Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
 
