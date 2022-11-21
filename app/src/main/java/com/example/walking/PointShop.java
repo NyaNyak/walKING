@@ -2,8 +2,10 @@ package com.example.walking;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -13,13 +15,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialog;
 
 import org.w3c.dom.Text;
 
 public class PointShop extends AppCompatActivity {
     ImageView goBackShop;
     Button buy1, buy2, buy3, buy4;
-    Dialog dialog;
+    Dialog dialog, animationDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,12 @@ public class PointShop extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_logout);
+
+        animationDialog = new Dialog(this);
+        animationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        animationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        animationDialog.setContentView(R.layout.animation_dialog);
+        animationDialog.setCancelable(false);
 
         buy1 = (Button) findViewById(R.id.price1);
         buy1.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +104,12 @@ public class PointShop extends AppCompatActivity {
     //뱃지뽑기 전용
     public void showDialogShop(){
         TextView dialogText = dialog.findViewById(R.id.dialogText);
+        //애니메이션
+        final ImageView img_loading_frame = (ImageView) animationDialog.findViewById(R.id.load_animation);
+        final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
+        //애니메이션 실행 후 다이얼로그 종료를 위한 핸들러
+        Handler handler = new Handler();
+
         dialogText.setText("구매하시겠습니까?");
         dialog.show();
         //취소 버튼 누르면
@@ -111,6 +126,17 @@ public class PointShop extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                animationDialog.show();
+                frameAnimation.start();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        animationDialog.dismiss();
+
+                        //이거 대신 가챠 다이얼로그 띄우면 됨
+                        Toast.makeText(getApplicationContext(),"가챠성공!",Toast.LENGTH_SHORT).show();
+                    }
+                },1600);
             }
         });
     }
