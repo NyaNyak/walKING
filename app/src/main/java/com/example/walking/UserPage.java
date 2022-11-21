@@ -46,7 +46,6 @@ public class UserPage extends AppCompatActivity {
         goBackUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
                 finish();
             }
         });
@@ -132,12 +131,12 @@ public class UserPage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
         finish();
     }
 
     @Override
     public void finish() {
+        //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         String saveGoal = pref.getString("walk_goal", "");
         Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
