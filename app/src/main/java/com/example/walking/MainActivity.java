@@ -1,5 +1,9 @@
 package com.example.walking;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     SensorManager sensorManager;
     Sensor stepCountSensor;
     String saveSteps, saveCounterSteps, saveInitSteps;
+    ActivityResultLauncher<Intent> walkGoalReturn;
 
     //유저 정보 변수
     TextView level, userName, exp, point, distance, calorie;
@@ -80,7 +85,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         calorie.setText(pref.getString("total_kcal",""));
         goalCount.setText(pref.getString("walk_goal", ""));
 
-
+        //변경한 목표 불러오기 위한 인텐트
+        walkGoalReturn = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            int res = data.getIntExtra("Goal",1000);
+                            goalCount.setText(Integer.toString(res));
+                            //Toast.makeText(getApplicationContext(),Integer.toString(res),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
 
         //로컬에 저장된 걸음 수를 불러와 레이아웃에 표시
@@ -150,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 walkProgress.setProgress((int)progress);
 
                 Intent intent = new Intent(getApplicationContext(), UserPage.class);
-                startActivity(intent);
+                walkGoalReturn.launch(intent);
                 overridePendingTransition(R.anim.vertical_enter,R.anim.none);
             }
         });

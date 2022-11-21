@@ -34,17 +34,24 @@ public class UserPage extends AppCompatActivity {
             R.drawable.cat_normal, R.drawable.cat_epic, R.drawable.cat_special, R.drawable.alpaca_normal, R.drawable.alpaca_epic, R.drawable.alpaca_special, R.drawable.doge_normal, R.drawable.doge_epic,
             R.drawable.doge_special, R.drawable.face_normal, R.drawable.face_epic, R.drawable.face_special, R.drawable.pepe_normal,
             R.drawable.pepe_epic, R.drawable.pepe_special, R.drawable.seoultech1, R.drawable.seoultech2, R.drawable.seoultech3, R.drawable.fox_hidden};
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_page);
+
         goBackUser= (ImageView) findViewById(R.id.goBack_user);
 
         goBackUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
+                SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                String saveGoal = pref.getString("walk_goal", "");
+                Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
+                outIntent.putExtra("Goal", Integer.parseInt(saveGoal));
+                setResult(RESULT_OK, outIntent);
                 finish();
             }
         });
@@ -126,11 +133,16 @@ public class UserPage extends AppCompatActivity {
         });
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        String saveGoal = pref.getString("walk_goal", "");
+        Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
+        outIntent.putExtra("Goal", Integer.parseInt(saveGoal));
+        setResult(RESULT_OK, outIntent);
         finish();
     }
 

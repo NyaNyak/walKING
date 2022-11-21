@@ -62,7 +62,10 @@ public class SetWalkGoal extends AppCompatActivity {
         id = pref.getString("user_id", "");
         goal = pref.getString("walk_goal", "");
 
+        if(number == null) number = "1000";
+
         if (!goal.equals(number)){
+            overridePendingTransition(R.anim.none, R.anim.horizon_exit);
             HashMap<String, String> result = new PutWalkGoal().putWalkGoal(id, number);
 
             if (result.containsKey("detail")){
