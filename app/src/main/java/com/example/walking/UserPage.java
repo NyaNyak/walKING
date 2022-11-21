@@ -47,11 +47,6 @@ public class UserPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
-                SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
-                String saveGoal = pref.getString("walk_goal", "");
-                Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
-                outIntent.putExtra("Goal", Integer.parseInt(saveGoal));
-                setResult(RESULT_OK, outIntent);
                 finish();
             }
         });
@@ -138,16 +133,16 @@ public class UserPage extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         //로컬에 저장된 목표걸음수 불러와서 메인에 전달해준다
-        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
-        String saveGoal = pref.getString("walk_goal", "");
-        Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
-        outIntent.putExtra("Goal", Integer.parseInt(saveGoal));
-        setResult(RESULT_OK, outIntent);
         finish();
     }
 
     @Override
     public void finish() {
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        String saveGoal = pref.getString("walk_goal", "");
+        Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
+        outIntent.putExtra("Goal", Integer.parseInt(saveGoal));
+        setResult(RESULT_OK, outIntent);
         super.finish();
         overridePendingTransition(R.anim.none, R.anim.vertical_exit);
     }
