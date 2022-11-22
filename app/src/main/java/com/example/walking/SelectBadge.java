@@ -19,13 +19,7 @@ public class SelectBadge extends AppCompatActivity {
     Animation scaleUp, scaleDown;
     ImageButton btnArray[] = new ImageButton[37];
     int selectedIdx;
-    final private int btnId[] = {R.id.leopardNormal, R.id.leopardEpic, R.id.leopardSpecial,
-    R.id.foxNormal, R.id.foxEpic, R.id.foxSpecial, R.id.eagleNormal, R.id.eagleEpic,
-    R.id.eagleSpecial, R.id.wolfNormal, R.id.wolfEpic, R.id.wolfSpecial, R.id.tigerNormal,
-    R.id.tigerEpic, R.id.tigerSpecial, R.id.penguinNormal, R.id.penguinEpic, R.id.penguinSpecial,
-    R.id.catNormal, R.id.catEpic, R.id.catSpecial, R.id.alpacaNormal, R.id.alpacaEpic, R.id.alpacaSpecial, R.id.dogeNormal, R.id.dogeEpic,
-    R.id.dogeSpecial, R.id.faceNormal, R.id.faceEpic, R.id.faceSpecial, R.id.pepeNormal,
-    R.id.pepeEpic, R.id.pepeSpecial, R.id.techNormal, R.id.techEpic, R.id.techSpecial, R.id.foxHidden};
+    final private int[] btnId = BadgeList.badgeId();
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

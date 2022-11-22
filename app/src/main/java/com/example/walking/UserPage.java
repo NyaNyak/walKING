@@ -31,14 +31,7 @@ public class UserPage extends AppCompatActivity {
     Dialog dialog;
     ActivityResultLauncher<Intent> selectedBadgeReturn;
     TextView userName, userId;
-    final private int imgId[] = {R.drawable.leopard_normal, R.drawable.leopard_epic, R.drawable.leopard_special,
-            R.drawable.fox_normal, R.drawable.fox_epic, R.drawable.fox_special, R.drawable.eagle_normal, R.drawable.eagle_epic,
-            R.drawable.eagle_special, R.drawable.wolf_normal, R.drawable.wolf_epic, R.drawable.wolf_special, R.drawable.tiger_normal,
-            R.drawable.tiger_epic, R.drawable.tiger_special, R.drawable.penguin_normal, R.drawable.penguin_epic, R.drawable.penguin_special,
-            R.drawable.cat_normal, R.drawable.cat_epic, R.drawable.cat_special, R.drawable.alpaca_normal, R.drawable.alpaca_epic, R.drawable.alpaca_special, R.drawable.doge_normal, R.drawable.doge_epic,
-            R.drawable.doge_special, R.drawable.face_normal, R.drawable.face_epic, R.drawable.face_special, R.drawable.pepe_normal,
-            R.drawable.pepe_epic, R.drawable.pepe_special, R.drawable.seoultech1, R.drawable.seoultech2, R.drawable.seoultech3, R.drawable.fox_hidden};
-
+    final private int[] imgId = BadgeList.badgeImg();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
