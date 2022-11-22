@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -21,12 +22,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import org.w3c.dom.Text;
+
 public class UserPage extends AppCompatActivity {
     ImageView goBackUser, currentBadge;
     Button changeBadge;
     ConstraintLayout setGoal, logOut;
     Dialog dialog;
     ActivityResultLauncher<Intent> selectedBadgeReturn;
+    TextView userName, userId;
     final private int imgId[] = {R.drawable.leopard_normal, R.drawable.leopard_epic, R.drawable.leopard_special,
             R.drawable.fox_normal, R.drawable.fox_epic, R.drawable.fox_special, R.drawable.eagle_normal, R.drawable.eagle_epic,
             R.drawable.eagle_special, R.drawable.wolf_normal, R.drawable.wolf_epic, R.drawable.wolf_special, R.drawable.tiger_normal,
@@ -40,6 +44,14 @@ public class UserPage extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_page);
+
+        userName = (TextView) findViewById(R.id.userName);
+        userId = (TextView) findViewById(R.id.userId);
+
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+
+        userName.setText(pref.getString("user_name",""));
+        userId.setText(pref.getString("user_id",""));
 
         goBackUser= (ImageView) findViewById(R.id.goBack_user);
 
