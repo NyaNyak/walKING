@@ -251,31 +251,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        userProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = todaySteps.edit();
-                editor.putString("steps", Integer.toString(currentSteps));
-                editor.putString("counterSteps", Integer.toString(counterSteps));
-                editor.putString("initSteps", Integer.toString(initSteps));
-                editor.commit();
-
-                SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor2 = prefs.edit();
-                editor2.putString("total_dist", String.format("%.2f", distValue));
-                editor2.putString("total_kcal", Integer.toString(calorieValue));
-                editor2.commit();
-
-                float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
-                //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
-                walkProgress.setProgress((int)progress);
-
-                Intent intent = new Intent(getApplicationContext(), LogIn.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         goToShop.setOnClickListener(new View.OnClickListener() {
             @Override
