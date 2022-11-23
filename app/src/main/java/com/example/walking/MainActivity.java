@@ -49,6 +49,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //유저 정보 변수
     TextView level, userName, exp, point, distance, calorie;
 
+    //성별 저장을 위한 변수
+    Boolean isMale;
+
+    //성별에 따라 달라지는 1km당 평균 걸음
+    int avgStepsPer1km = 0;
+
+    //성별에 따라 달라지는 1km당 평균 소모 칼로리
+    int avgCalPer1km = 0;
+
+    //칼로리 계산을 위한 변수
+    int calorieValue = 0;
+
+    //거리 계산을 위한 변수
+    float distValue = 0.00f;
+
     //뒤로가기 두번으로 앱 종료를 위한 변수
     long backKeyPressedTime = 0;
 
@@ -85,6 +100,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         level.setText(pref.getString("level",""));
         userName.setText(pref.getString("user_name",""));
+        //성별 설정
+        isMale = Boolean.parseBoolean(pref.getString("gender", ""));
+        if(isMale){
+            avgStepsPer1km = 1300;
+            avgCalPer1km = 65;
+        }else{
+            avgStepsPer1km = 1500;
+            avgCalPer1km = 45;
+        }
         //exp는 일단 넘기고
         point.setText(pref.getString("point",""));
         distance.setText(pref.getString("total_dist",""));
@@ -140,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         //자정마다 걸음수 초기화
-        setAlarm(MainActivity.this);
+        //setAlarm(MainActivity.this);
 
         //[임시] 걸음 수 리셋 버튼(이후에 보상받기버튼으로 재구현)
         reward.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +174,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 currentSteps = 0;
                 counterSteps = 0;
                 initSteps = 0;
+                distValue = 0.00f;
+                calorieValue = 0;
                 //로컬에 0으로 초기화된 걸음수 저장
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = todaySteps.edit();
@@ -157,12 +183,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
+
+                //로컬에 초기화된 거리와 칼로리 저장
+                SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("total_dist", Float.toString(distValue));
+                editor2.putString("total_kcal", Integer.toString(calorieValue));
+                editor2.commit();
+
                 count.setText(String.valueOf(currentSteps));
+                distance.setText(String.valueOf(distValue));
+                calorie.setText(String.valueOf(calorieValue));
                 walkProgress.setProgress(0);
             }
         });
 
-        //액티비티 전환 시에도 걸음 수 로컬에 저장
+        //액티비티 전환 시에도 걸음 수, 거리, 칼로리 로컬에 저장
         profilePage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,6 +208,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
+
+                SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("total_dist", String.format("%.2f", distValue));
+                editor2.putString("total_kcal", Integer.toString(calorieValue));
+                editor2.commit();
 
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
                 //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
@@ -193,6 +235,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
+                SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("total_dist", String.format("%.2f", distValue));
+                editor2.putString("total_kcal", Integer.toString(calorieValue));
+                editor2.commit();
+
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
                 //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
                 walkProgress.setProgress((int)progress);
@@ -213,6 +261,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
+                SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("total_dist", String.format("%.2f", distValue));
+                editor2.putString("total_kcal", Integer.toString(calorieValue));
+                editor2.commit();
+
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
                 //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
                 walkProgress.setProgress((int)progress);
@@ -232,6 +286,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
+
+                SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("total_dist", String.format("%.2f", distValue));
+                editor2.putString("total_kcal", Integer.toString(calorieValue));
+                editor2.commit();
 
                 float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
                 //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
@@ -260,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         editor.putString("counterSteps", Integer.toString(counterSteps));
         editor.putString("initSteps", Integer.toString(initSteps));
         editor.commit();
+
         super.onStop();
         if(sensorManager != null){
             //센서 멈춤
@@ -291,6 +352,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
             }
+
             //[현재 걸음수를 표시하기 위한 수식]
             //걸음 센서는 휴대폰을 종료하지 않는 이상, 앱 종료 여부와 상관없이 계속 걸음수를 누적중.
             //즉 현재 걸음 수는 센서가 측정한 총 걸음에서 기준값으로 저장해둔 counterSteps을 빼서 구한다.
@@ -300,6 +362,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
             //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
             walkProgress.setProgress((int)progress);
+
+            //걸음 수로 거리 계산
+            distValue = (float) currentSteps / avgStepsPer1km;
+            distance.setText(String.format("%.2f", distValue));
+
+            //거리로 칼로리 계산
+            calorieValue = Math.round(distValue * avgCalPer1km);
+            calorie.setText(Integer.toString(calorieValue));
 
             Log.i("log: ", "New step detected by STEP_COUNTER sensor. Total step count: " + currentSteps);
             /*
@@ -314,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
+        //why am i empty?
     }
 
     //자정마다 실행하는 알람 메소드
@@ -322,17 +392,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         AlarmManager resetAlarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         //AlarmReceiver 클래스에 값 전달
         Intent receiverIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_MUTABLE);
 
         Calendar resetCal = Calendar.getInstance();
         resetCal.setTimeInMillis(System.currentTimeMillis());
-        resetCal.set(Calendar.HOUR_OF_DAY, 20);
-        resetCal.set(Calendar.MINUTE, 50);
-        resetCal.set(Calendar.SECOND, 0);
+        resetCal.set(Calendar.HOUR_OF_DAY, 21);
+        resetCal.set(Calendar.MINUTE, 54);
+        resetCal.set(Calendar.SECOND, 40);
 
         //24시간을 뜻하는 INTERVAL_DAY 상수를 더해서 다음날 0시로 설정
-        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY,
-                AlarmManager.INTERVAL_DAY, pendingIntent);
+        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, resetCal.getTimeInMillis()+5000,
+                5000, pendingIntent);
 
         SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
         String setResetTime = format.format(new Date(resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY));
@@ -341,13 +411,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void finish() {
-        //액티비티 종료 시 로컬에 걸음수 저장
+        //액티비티 종료 시 로컬에 걸음수, 거리, 칼로리 저장
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = todaySteps.edit();
         editor.putString("steps", Integer.toString(currentSteps));
         editor.putString("counterSteps", Integer.toString(counterSteps));
         editor.putString("initSteps", Integer.toString(initSteps));
         editor.commit();
+
+        SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = prefs.edit();
+        editor2.putString("total_dist", String.format("%.2f", distValue));
+        editor2.putString("total_kcal", String.format("%.1f", calorieValue));
+        editor2.commit();
+
         super.finish();
     }
 
