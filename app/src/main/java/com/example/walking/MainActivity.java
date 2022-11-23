@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +30,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView profilePage, ranking, userProfile, gift;
@@ -132,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(stepCountSensor == null){
             Toast.makeText(this, "No Step Sensor", Toast.LENGTH_SHORT).show();
         }
+
+        //자정마다 걸음수 초기화
+        setAlarm(MainActivity.this);
 
         //[임시] 걸음 수 리셋 버튼(이후에 보상받기버튼으로 재구현)
         reward.setOnClickListener(new View.OnClickListener() {
@@ -306,6 +315,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    //자정마다 실행하는 알람 메소드
+    private void setAlarm(Context context){
+        AlarmManager resetAlarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        //AlarmReceiver 클래스에 값 전달
+        Intent receiverIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, 0);
+
+        Calendar resetCal = Calendar.getInstance();
+        resetCal.setTimeInMillis(System.currentTimeMillis());
+        resetCal.set(Calendar.HOUR_OF_DAY, 20);
+        resetCal.set(Calendar.MINUTE, 50);
+        resetCal.set(Calendar.SECOND, 0);
+
+        //24시간을 뜻하는 INTERVAL_DAY 상수를 더해서 다음날 0시로 설정
+        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY,
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
+        String setResetTime = format.format(new Date(resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY));
+        Log.d("resetAlarm", "ResetHour : " + setResetTime);
     }
 
     @Override
