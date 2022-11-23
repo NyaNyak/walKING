@@ -187,12 +187,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //로컬에 초기화된 거리와 칼로리 저장
                 SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = prefs.edit();
-                editor2.putString("total_dist", Float.toString(distValue));
+                editor2.putString("total_dist", String.format("%.2f", distValue));
                 editor2.putString("total_kcal", Integer.toString(calorieValue));
                 editor2.commit();
 
                 count.setText(String.valueOf(currentSteps));
-                distance.setText(String.valueOf(distValue));
+                distance.setText(String.format("%.2f", distValue));
                 calorie.setText(String.valueOf(calorieValue));
                 walkProgress.setProgress(0);
             }
