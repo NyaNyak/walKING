@@ -31,9 +31,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walking.ServerApi.PutAll;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView profilePage, ranking, userProfile, gift;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor stepCountSensor;
     String saveSteps, saveCounterSteps, saveInitSteps;
     ActivityResultLauncher<Intent> walkGoalReturn;
+    HashMap<String, String> result;
 
     //유저 정보 변수
     TextView level, userName, exp, point, distance, calorie;
@@ -115,6 +119,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         calorie.setText(pref.getString("total_kcal",""));
         goalCount.setText(pref.getString("walk_goal", ""));
         userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
+
+        userProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                result = new PutAll().putAll(pref);
+            }
+        });
+
+
 
         //변경한 목표 불러오기 위한 인텐트
         /*

@@ -22,7 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.walking.ServerApi.PutAll;
+
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
 
 public class UserPage extends AppCompatActivity {
     ImageView goBackUser, currentBadge;
@@ -31,6 +35,7 @@ public class UserPage extends AppCompatActivity {
     Dialog dialog;
     ActivityResultLauncher<Intent> selectedBadgeReturn;
     TextView userName, userId;
+    HashMap<String, String> result;
     final private int[] imgId = BadgeList.badgeImg();
 
     @Override
@@ -131,6 +136,10 @@ public class UserPage extends AppCompatActivity {
 
                 SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor1 = pref.edit();
+
+                result = new PutAll().putAll(pref);
+                System.out.println(result.get("detail"));
+
                 editor1.clear();
                 editor1.apply();
 
