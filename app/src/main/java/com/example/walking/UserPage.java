@@ -40,11 +40,14 @@ public class UserPage extends AppCompatActivity {
 
         userName = (TextView) findViewById(R.id.userName);
         userId = (TextView) findViewById(R.id.userId);
+        currentBadge = (ImageView) findViewById(R.id.current_badge);
 
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
 
         userName.setText(pref.getString("user_name",""));
         userId.setText(pref.getString("user_id",""));
+        currentBadge.setImageResource(imgId[Integer.parseInt(pref.getString("set_badge","0"))]);
 
         goBackUser= (ImageView) findViewById(R.id.goBack_user);
 
@@ -55,7 +58,7 @@ public class UserPage extends AppCompatActivity {
             }
         });
 
-        currentBadge = (ImageView) findViewById(R.id.current_badge);
+
         selectedBadgeReturn = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -66,6 +69,8 @@ public class UserPage extends AppCompatActivity {
                             Intent data = result.getData();
                             int ans = data.getIntExtra("Idx",0);
                             currentBadge.setImageResource(imgId[ans]);
+                            editor.putString("set_badge",Integer.toString(ans));
+                            editor.apply();
                         }
                     }
                 });
@@ -123,6 +128,11 @@ public class UserPage extends AppCompatActivity {
                 SharedPreferences.Editor editor = autoLogIn.edit();
                 editor.clear();
                 editor.commit();
+
+                SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = pref.edit();
+                editor1.clear();
+                editor1.apply();
 
                 //앱 종료
                 finishAffinity();

@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         distance.setText(pref.getString("total_dist",""));
         calorie.setText(pref.getString("total_kcal",""));
         goalCount.setText(pref.getString("walk_goal", ""));
+        userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
 
         //변경한 목표 불러오기 위한 인텐트
         walkGoalReturn = registerForActivityResult(
@@ -302,6 +303,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             sensorManager.unregisterListener(this);
         }
     }
+
+    //TODO 서버에 거리 칼로리 저장, 로그아웃시 로컬 유저인포 데이터 삭제
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
