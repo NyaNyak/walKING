@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ImageView profilePage, ranking, userProfile, gift;
     TextView count, goalCount;
     Button reward;
-    ProgressBar walkProgress;
+    ProgressBar walkProgress, expProgress;
     ConstraintLayout goToShop;
     SensorManager sensorManager;
     Sensor stepCountSensor;
@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     //성별 저장을 위한 변수
     Boolean isMale;
+
+    //경험치 계산을 위한 변수
+    int calcExp;
+    int addExp = 0;
 
     //성별에 따라 달라지는 1km당 평균 걸음
     int avgStepsPer1km = 0;
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         count = (TextView) findViewById(R.id.count);
         goalCount = (TextView) findViewById(R.id.goalCount);
         walkProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        expProgress = (ProgressBar) findViewById(R.id.levelBar);
 
         //유저 정보
         level = (TextView) findViewById(R.id.level);
@@ -113,7 +118,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             avgStepsPer1km = 1500;
             avgCalPer1km = 45;
         }
-        //exp는 일단 넘기고
+        //exp 계산
+
+        addExp = Integer.parseInt(pref.getString("exp", ""));
+        calcExp = addExp/Integer.parseInt(level.getText().toString())*10;
+        exp.setText(Integer.toString(calcExp) + " percent");
+        Toast.makeText(getApplicationContext(), Integer.toString(calcExp), Toast.LENGTH_SHORT).show();
+
         point.setText(pref.getString("point",""));
         distance.setText(pref.getString("total_dist",""));
         calorie.setText(pref.getString("total_kcal",""));
@@ -151,7 +162,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //로컬에 저장된 걸음 수를 불러와 레이아웃에 표시
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
-        saveSteps = todaySteps.getString("steps", "0");
+        SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        saveSteps = prefs.getString("today_walk", "0");
         saveCounterSteps = todaySteps.getString("counterSteps", "0");
         saveInitSteps = todaySteps.getString("initSteps", "0");
 
@@ -164,6 +176,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
         //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
         walkProgress.setProgress((int)progress);
+
+        //경험치 달성 정도 프로그레스바로 표시
+        expProgress.setProgress((int)calcExp);
 
         //걸음 센서 사용을 위해 퍼미션체크
         if(ContextCompat.checkSelfPermission(this,
@@ -193,10 +208,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 initSteps = 0;
                 distValue = 0.00f;
                 calorieValue = 0;
+                addExp = 0;
+
                 //로컬에 0으로 초기화된 걸음수 저장
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = todaySteps.edit();
-                editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
@@ -204,6 +220,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //로컬에 초기화된 거리와 칼로리 저장
                 SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("today_walk", Integer.toString(currentSteps));
+                editor2.putString("exp", "0");
                 editor2.putString("total_dist", String.format("%.2f", distValue));
                 editor2.putString("total_kcal", Integer.toString(calorieValue));
                 editor2.commit();
@@ -212,6 +230,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 distance.setText(String.format("%.2f", distValue));
                 calorie.setText(String.valueOf(calorieValue));
                 walkProgress.setProgress(0);
+                exp.setText(pref.getString("exp", "") + " percent");
+                expProgress.setProgress(0);
             }
         });
 
@@ -221,13 +241,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onClick(View view) {
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = todaySteps.edit();
-                editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("today_walk", Integer.toString(currentSteps));
+                editor2.putString("exp", Integer.toString(addExp));
                 editor2.putString("total_dist", String.format("%.2f", distValue));
                 editor2.putString("total_kcal", Integer.toString(calorieValue));
                 editor2.commit();
@@ -247,13 +268,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onClick(View view) {
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = todaySteps.edit();
-                editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("today_walk", Integer.toString(currentSteps));
+                editor2.putString("exp", Integer.toString(addExp));
                 editor2.putString("total_dist", String.format("%.2f", distValue));
                 editor2.putString("total_kcal", Integer.toString(calorieValue));
                 editor2.commit();
@@ -274,13 +296,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onClick(View view) {
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = todaySteps.edit();
-                editor.putString("steps", Integer.toString(currentSteps));
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
                 editor.commit();
 
                 SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = prefs.edit();
+                editor2.putString("today_walk", Integer.toString(currentSteps));
+                editor2.putString("exp", Integer.toString(addExp));
                 editor2.putString("total_dist", String.format("%.2f", distValue));
                 editor2.putString("total_kcal", Integer.toString(calorieValue));
                 editor2.commit();
@@ -315,14 +338,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void onStop(){
-        SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = todaySteps.edit();
-        editor.putString("steps", Integer.toString(currentSteps));
-        editor.putString("counterSteps", Integer.toString(counterSteps));
-        editor.putString("initSteps", Integer.toString(initSteps));
-        editor.commit();
-
         super.onStop();
+
         if(sensorManager != null){
             //센서 멈춤
             sensorManager.unregisterListener(this);
@@ -334,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         if(sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
             //현재까지의 걸음수를 0으로 초기화 했을때의 동작 (초기화 버튼을 클릭하거나, 자정이 되었거나 - 이후 구현할것)
             if(counterSteps < 1){
@@ -349,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             String lastCount = todaySteps.getString("counterSteps", "0");
             if(sensorEvent.values[0] <= Integer.parseInt(lastCount)){
                 counterSteps = (int) sensorEvent.values[0];
-                initSteps = Integer.parseInt(todaySteps.getString("steps", "0"));
+                initSteps = Integer.parseInt(pref.getString("today_walk", "0"));
                 SharedPreferences.Editor editor = todaySteps.edit();
                 editor.putString("counterSteps", Integer.toString(counterSteps));
                 editor.putString("initSteps", Integer.toString(initSteps));
@@ -365,6 +383,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
             //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
             walkProgress.setProgress((int)progress);
+
+            //한걸음당 경험치 1 증가
+            addExp += 1;
+            calcExp = addExp/(Integer.parseInt(level.getText().toString())*10);
+            //Toast.makeText(getApplicationContext(), Integer.toString(Integer.parseInt((pref.getString("exp", ""))+addExp)/(Integer.parseInt(level.getText().toString())*10)), Toast.LENGTH_SHORT).show();
+            exp.setText(Integer.toString(calcExp) + " percent");
+            expProgress.setProgress((int)calcExp);
 
             //걸음 수로 거리 계산
             distValue = (float) currentSteps / avgStepsPer1km;
@@ -413,23 +438,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void finish() {
+    protected void onPause() {
         //액티비티 종료 시 로컬에 걸음수, 거리, 칼로리 저장
         SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = todaySteps.edit();
-        editor.putString("steps", Integer.toString(currentSteps));
         editor.putString("counterSteps", Integer.toString(counterSteps));
         editor.putString("initSteps", Integer.toString(initSteps));
         editor.commit();
 
         SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs.edit();
+        editor2.putString("today_walk", Integer.toString(currentSteps));
+        editor2.putString("exp", Integer.toString(addExp));
         editor2.putString("total_dist", String.format("%.2f", distValue));
-        editor2.putString("total_kcal", String.format("%.1f", calorieValue));
+        editor2.putString("total_kcal", Integer.toString(calorieValue));
         editor2.commit();
 
+        super.onPause();
+    }
+
+    @Override
+    public void finish() {
         super.finish();
     }
+
 
     @Override
     public void onBackPressed() {
