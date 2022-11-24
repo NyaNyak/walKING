@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
 
         //변경한 목표 불러오기 위한 인텐트
+        /*
         walkGoalReturn = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         }
                     }
                 });
+
+         */
 
 
         //로컬에 저장된 걸음 수를 불러와 레이아웃에 표시
@@ -221,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 walkProgress.setProgress((int)progress);
 
                 Intent intent = new Intent(getApplicationContext(), UserPage.class);
-                walkGoalReturn.launch(intent);
+                startActivity(intent);
                 overridePendingTransition(R.anim.vertical_enter,R.anim.none);
             }
         });
@@ -279,6 +282,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        goalCount.setText(pref.getString("walk_goal", ""));
+        userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
     }
 
     public void onStart(){
