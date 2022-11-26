@@ -40,18 +40,18 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView profilePage, ranking, userProfile, gift;
-    TextView count, goalCount;
+    TextView initInfo; //임시 정보 리셋 기능 구현을 위해
     Button reward;
     ProgressBar walkProgress, expProgress;
     ConstraintLayout goToShop;
     SensorManager sensorManager;
     Sensor stepCountSensor;
     String saveSteps, saveCounterSteps, saveInitSteps;
-    ActivityResultLauncher<Intent> walkGoalReturn;
+    //ActivityResultLauncher<Intent> walkGoalReturn;
     HashMap<String, String> result;
 
     //유저 정보 변수
-    TextView level, userName, exp, point, distance, calorie;
+    TextView count, goalCount, level, userName, exp, point, distance, calorie;
 
     //성별 저장을 위한 변수
     Boolean isMale;
@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     //레벨링 계산을 위한 변수
     int userLevel = 1;
+
+    //보상 포인트 지급을 위한 변수
+    int addPoint = 0;
+    Boolean getReward = false;
 
     //성별에 따라 달라지는 1km당 평균 걸음
     int avgStepsPer1km = 0;
@@ -97,10 +101,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         userProfile = (ImageView) findViewById(R.id.user_profile);
         goToShop = (ConstraintLayout) findViewById(R.id.constraintLayout3);
         reward = (Button) findViewById(R.id.reward);
+        gift = (ImageView) findViewById(R.id.gift);
         count = (TextView) findViewById(R.id.count);
         goalCount = (TextView) findViewById(R.id.goalCount);
         walkProgress = (ProgressBar) findViewById(R.id.progress_bar);
         expProgress = (ProgressBar) findViewById(R.id.levelBar);
+
+        //임시 정보 리셋 구현을 위해
+        initInfo = (TextView) findViewById(R.id.title2);
 
         //유저 정보
         level = (TextView) findViewById(R.id.level);
@@ -126,6 +134,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             avgCalPer1km = 45;
         }
 
+        point.setText(pref.getString("point",""));
+        getReward = Boolean.parseBoolean(pref.getString("getReward", ""));
+        distance.setText(pref.getString("total_dist",""));
+        calorie.setText(pref.getString("total_kcal",""));
+        goalCount.setText(pref.getString("walk_goal", ""));
+        userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
+
         //exp 계산
         totalWalk = Integer.parseInt(pref.getString("exp", ""));
         calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
@@ -134,13 +149,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         exp.setText(Integer.toString(calcExp) + " percent");
         Log.i("check: ", "exp percent is "+calcExp);
 
-
-        point.setText(pref.getString("point",""));
-        distance.setText(pref.getString("total_dist",""));
-        calorie.setText(pref.getString("total_kcal",""));
-        goalCount.setText(pref.getString("walk_goal", ""));
-        userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
-
+        //임시로 서버에 정보 전달
         userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,8 +217,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //자정마다 걸음수 초기화
         //setAlarm(MainActivity.this);
 
-        //[임시] 걸음 수 리셋 버튼(이후에 보상받기버튼으로 재구현)
-        reward.setOnClickListener(new View.OnClickListener() {
+        //[임시] 걸음 수 리셋 버튼(헤더 부분 타이틀 "KING" 클릭 리스너)
+        initInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 walkProgress.setProgress(20);
@@ -218,8 +227,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 initSteps = 0;
                 distValue = 0.00f;
                 calorieValue = 0;
-                //addExp = 0;
-                //totalWalk = 0;
+                addExp = 0;
+                totalWalk = 0;
+                getReward = false;
 
                 //로컬에 0으로 초기화된 걸음수 저장
                 SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
@@ -232,9 +242,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = prefs.edit();
                 editor2.putString("today_walk", Integer.toString(currentSteps));
-                //editor2.putString("total_walk", Integer.toString(addExp));
-                //editor2.putString("exp", "0");
-                //editor2.putString("level", "1");
+                editor2.putString("total_walk", Integer.toString(addExp));
+                editor2.putString("getReward", Boolean.toString(getReward));
+                editor2.putString("exp", "0");
+                editor2.putString("point","0");
+                editor2.putString("level", "1");
                 editor2.putString("total_dist", String.format("%.2f", distValue));
                 editor2.putString("total_kcal", Integer.toString(calorieValue));
                 editor2.commit();
@@ -243,9 +255,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 distance.setText(String.format("%.2f", distValue));
                 calorie.setText(String.valueOf(calorieValue));
                 walkProgress.setProgress(0);
-                //level.setText(pref.getString("level", ""));
-                //exp.setText(pref.getString("exp", "") + " percent");
-                //expProgress.setProgress(0);
+                level.setText(pref.getString("level", ""));
+                point.setText(pref.getString("point", ""));
+                exp.setText(pref.getString("exp", "") + " percent");
+                expProgress.setProgress(0);
             }
         });
 
@@ -375,6 +388,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 calcExp = (int)calc;
                 exp.setText(Integer.toString(calcExp) + " percent");
                 expProgress.setProgress((int)calcExp);
+            }
+
+            //목표 달성 시 포인트 지급
+            int goal = Integer.parseInt(goalCount.getText().toString());
+            //int goal = 100;
+            if(!getReward && currentSteps >= goal ){
+                reward.setEnabled(true);
+                gift.setVisibility(View.VISIBLE);
+                reward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addPoint = goal/10 + (goal - 1000)/1000*50;
+                        getReward = true;
+                        SharedPreferences.Editor editor2 = pref.edit();
+                        editor2.putString("point", Integer.toString(Integer.parseInt(point.getText().toString())+addPoint));
+                        editor2.putString("getReward", Boolean.toString(getReward));
+                        editor2.commit();
+                        point.setText(pref.getString("point",""));
+                        Toast.makeText(getApplicationContext(), addPoint + "포인트 획득!", Toast.LENGTH_SHORT).show();
+                        reward.setEnabled(false);
+                        gift.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+            else{
+                reward.setEnabled(false);
+                gift.setVisibility(View.INVISIBLE);
             }
 
             //걸음 수로 거리 계산

@@ -229,6 +229,7 @@
                 android:background="@drawable/button"
                 android:letterSpacing="0.05"
                 android:text="보상 받기"
+                android:enabled="false"
                 android:textColor="@drawable/button_text"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -245,6 +246,7 @@
                 android:layout_marginStart="-2000dp"
                 android:layout_marginTop="-5dp"
                 android:src="@drawable/gift"
+                android:visibility="invisible"
                 app:layout_constraintTop_toTopOf="@+id/reward"
                 app:layout_constraintTop_toBottomOf="@+id/reward"
 
