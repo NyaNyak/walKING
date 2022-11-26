@@ -1,6 +1,8 @@
 package com.example.walking;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -82,6 +84,11 @@ public class PointShop extends AppCompatActivity {
         TextView dialogText = dialog.findViewById(R.id.dialogText);
         dialogText.setText("구매하시겠습니까?");
         dialog.show();
+
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+        int exp = Integer.parseInt(pref.getString("total_walk", ""));
+        int totalExp = Integer.parseInt(pref.getString("level", ""))*1000;
+
         //취소 버튼 누르면
         Button cancel = dialog.findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +103,10 @@ public class PointShop extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                int getExp = Math.round(percent/100*1000);
+                int getExp = Math.round(percent/100*totalExp);
+                SharedPreferences.Editor editor2 = pref.edit();
+                editor2.putString("total_walk", Integer.toString(exp + getExp));
+                editor2.commit();
                 Toast.makeText(getApplicationContext(),"경험치 " + getExp+" 획득!", Toast.LENGTH_SHORT).show();
             }
         });
