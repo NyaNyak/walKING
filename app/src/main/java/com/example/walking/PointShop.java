@@ -25,6 +25,7 @@ public class PointShop extends AppCompatActivity {
     ImageView goBackShop;
     Button buy1, buy2, buy3, buy4;
     Dialog dialog, animationDialog;
+    int totalExp;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,21 +54,21 @@ public class PointShop extends AppCompatActivity {
         buy1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShop(10);
+                showDialogShop(100);
             }
         });
         buy2 = (Button) findViewById(R.id.price2);
         buy2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShop(30);
+                showDialogShop(300);
             }
         });
         buy3 = (Button) findViewById(R.id.price3);
         buy3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShop(50);
+                showDialogShop(500);
             }
         });
         buy4 = (Button) findViewById(R.id.badgePrice);
@@ -80,14 +81,25 @@ public class PointShop extends AppCompatActivity {
     }
 
     //경험치 구매 전용
-    public void showDialogShop(float percent){
+    public void showDialogShop(int ratio){
         TextView dialogText = dialog.findViewById(R.id.dialogText);
         dialogText.setText("구매하시겠습니까?");
         dialog.show();
 
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         int exp = Integer.parseInt(pref.getString("total_walk", ""));
-        int totalExp = Integer.parseInt(pref.getString("level", ""))*1000;
+        int level = Integer.parseInt(pref.getString("level", "0"));
+        // 현재 계산에 쓸 값들 불러오기
+        int nowExp = Integer.parseInt(pref.getString("nowExp","0"));
+        // 현재 레벨 전까지의 총 경험치
+        totalExp = 0;
+
+        // 현재 레벨 전까지의 총 경험치
+        for (int i = 1;i <= level;i++) totalExp += i;
+        totalExp *= 1000;
+
+        System.out.println("total " + totalExp + " now " + nowExp);
+
 
         //취소 버튼 누르면
         Button cancel = dialog.findViewById(R.id.cancel);
@@ -103,8 +115,20 @@ public class PointShop extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                int getExp = Math.round(percent/100*totalExp);
                 SharedPreferences.Editor editor2 = pref.edit();
+
+                int getExp = level * ratio;
+
+                int nowExp = Integer.parseInt(pref.getString("nowExp", "0")) + getExp;
+
+                System.out.println("exp " + nowExp + " level " + level);
+
+                if (nowExp >= level * 1000){
+                    editor2.putString("level", Integer.toString(level + 1));
+                    nowExp -= level * 1000;
+                }
+
+                editor2.putString("nowExp", Integer.toString(nowExp));
                 editor2.putString("total_walk", Integer.toString(exp + getExp));
                 editor2.commit();
                 Toast.makeText(getApplicationContext(),"경험치 " + getExp+" 획득!", Toast.LENGTH_SHORT).show();
