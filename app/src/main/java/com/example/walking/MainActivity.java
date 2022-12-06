@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     float calc;
     int addExp = 0;
     int totalWalk = 0;
+    int curExp = 0;
 
     //레벨링 계산을 위한 변수
     int userLevel = 1;
@@ -120,8 +121,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //유저 정보 화면에 뿌리기
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
-        level.setText(pref.getString("level",""));
-        userLevel = Integer.parseInt(level.getText().toString());
+        userLevel = Integer.parseInt(pref.getString("level",""));
         Log.i("check: ", "current level is "+userLevel);
         userName.setText(pref.getString("user_name",""));
         //성별 설정
@@ -141,14 +141,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         goalCount.setText(pref.getString("walk_goal", ""));
         userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
 
-        //exp 계산
-        totalWalk = Integer.parseInt(pref.getString("exp", ""));
-        calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
-        calcExp = (int)calc;
-        addExp = Integer.parseInt(pref.getString("total_walk", ""));
-        exp.setText(Integer.toString(calcExp) + " percent");
-        Log.i("check: ", "exp percent is "+calcExp);
-
         //임시로 서버에 정보 전달
         userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,27 +148,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 result = new PutAll().putAll(pref);
             }
         });
-
-
-
-        //변경한 목표 불러오기 위한 인텐트
-        /*
-        walkGoalReturn = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            int res = data.getIntExtra("Goal",1000);
-                            goalCount.setText(Integer.toString(res));
-                            //Toast.makeText(getApplicationContext(),Integer.toString(res),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-         */
 
 
         //로컬에 저장된 걸음 수를 불러와 레이아웃에 표시
@@ -196,6 +167,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
         walkProgress.setProgress((int)progress);
 
+        //exp 계산
+        totalWalk = Integer.parseInt(prefs.getString("exp", ""));
+        curExp = Integer.parseInt(prefs.getString("exp",""));
+        addExp = Integer.parseInt(prefs.getString("total_walk", ""));
+
+
+        /*
+        //경험치 다 채우면 레벨업
+        while(curExp >= userLevel*100){
+            curExp -= userLevel*100;
+            userLevel += 1;
+        }
+        SharedPreferences.Editor editor2 = prefs.edit();
+        editor2.putString("exp", Integer.toString(curExp));
+        editor2.putString("level", Integer.toString(userLevel));
+        editor2.commit();*/
+
+
+        //totalWalk = addExp + currentSteps - (userLevel-1)*1000;
+        level.setText(prefs.getString("level",""));
+        Log.i("check", "walk is " + totalWalk);
+        calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
+        Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100);
+        calcExp = (int)calc;
+        exp.setText(Integer.toString(calcExp) + " percent");
+        expProgress.setProgress((int)calcExp);
+
         //경험치 달성 정도 프로그레스바로 표시
         expProgress.setProgress((int)calcExp);
 
@@ -213,9 +211,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(stepCountSensor == null){
             Toast.makeText(this, "No Step Sensor", Toast.LENGTH_SHORT).show();
         }
-
-        //자정마다 걸음수 초기화
-        //setAlarm(MainActivity.this);
 
         //[임시] 걸음 수 리셋 버튼(헤더 부분 타이틀 "KING" 클릭 리스너)
         initInfo.setOnClickListener(new View.OnClickListener() {
@@ -361,34 +356,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             walkProgress.setProgress((int)progress);
 
             //걸음수만큼 경험치 증가
-            if((addExp+currentSteps) >= (userLevel-1)*1000){
-                totalWalk = addExp + currentSteps - (userLevel-1)*1000;
+            if((addExp+currentSteps) >= (userLevel-1)*100){
+                totalWalk = addExp + currentSteps - (userLevel-1)*100;
             }else{
                 totalWalk = addExp + currentSteps;
             }
-            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
+            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
             calcExp = (int)calc;
             //Toast.makeText(getApplicationContext(), Integer.toString(Integer.parseInt((pref.getString("exp", ""))+addExp)/(Integer.parseInt(level.getText().toString())*10)), Toast.LENGTH_SHORT).show();
             exp.setText(Integer.toString(calcExp) + " percent");
             expProgress.setProgress((int)calcExp);
 
             //경험치 다 채우면 레벨업
-            if(totalWalk >= Integer.parseInt(level.getText().toString())*1000){
-                SharedPreferences.Editor editor2 = pref.edit();
-                editor2.putString("exp", Integer.toString(totalWalk - Integer.parseInt(level.getText().toString())*1000));
-                editor2.putString("level", Integer.toString(Integer.parseInt(level.getText().toString())+1));
-                editor2.commit();
-
-                userLevel = Integer.parseInt(pref.getString("level", ""));
-                //totalWalk = addExp + currentSteps - (userLevel-1)*1000;
-                level.setText(pref.getString("level",""));
-                Log.i("check", "walk is " + totalWalk);
-                calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
-                Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100);
-                calcExp = (int)calc;
-                exp.setText(Integer.toString(calcExp) + " percent");
-                expProgress.setProgress((int)calcExp);
+            int curLevel = Integer.parseInt(level.getText().toString());
+            while(totalWalk >= curLevel*100){
+                totalWalk -= curLevel*100;
+                curLevel+=1;
             }
+            SharedPreferences.Editor editor2 = pref.edit();
+            editor2.putString("exp", Integer.toString(totalWalk));
+            editor2.putString("level", Integer.toString(curLevel));
+            editor2.commit();
+            userLevel = Integer.parseInt(pref.getString("level", ""));
+            //totalWalk = addExp + currentSteps - (userLevel-1)*1000;
+            level.setText(pref.getString("level",""));
+            Log.i("check", "walk is " + totalWalk);
+            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
+            Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100);
+            calcExp = (int)calc;
+            exp.setText(Integer.toString(calcExp) + " percent");
+            expProgress.setProgress((int)calcExp);
 
             //목표 달성 시 포인트 지급
             int goal = Integer.parseInt(goalCount.getText().toString());
@@ -439,28 +436,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         //why am i empty?
-    }
-
-    //자정마다 실행하는 알람 메소드
-    private void setAlarm(Context context){
-        AlarmManager resetAlarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        //AlarmReceiver 클래스에 값 전달
-        Intent receiverIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_MUTABLE);
-
-        Calendar resetCal = Calendar.getInstance();
-        resetCal.setTimeInMillis(System.currentTimeMillis());
-        resetCal.set(Calendar.HOUR_OF_DAY, 21);
-        resetCal.set(Calendar.MINUTE, 54);
-        resetCal.set(Calendar.SECOND, 40);
-
-        //24시간을 뜻하는 INTERVAL_DAY 상수를 더해서 다음날 0시로 설정
-        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, resetCal.getTimeInMillis()+5000,
-                5000, pendingIntent);
-
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
-        String setResetTime = format.format(new Date(resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY));
-        Log.d("resetAlarm", "ResetHour : " + setResetTime);
     }
 
     @Override
