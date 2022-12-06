@@ -355,12 +355,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
             walkProgress.setProgress((int)progress);
 
+            int curLevel = Integer.parseInt(level.getText().toString());
+
+            int totalExp = 50*(curLevel-1)*(curLevel); // 원래 100* ... /2 이라 그냥 50만 곱하기
+
             //걸음수만큼 경험치 증가
-            if((addExp+currentSteps) >= (userLevel-1)*100){
-                totalWalk = addExp + currentSteps - (userLevel-1)*100;
+            // 기존은 이전렙-1 * 1000 을 넘으면 그만큼 빼서 계산하는걸로 했는데
+            // 레벨은 누적이라 totalExp를 선언하고 사용했두
+            if((addExp+currentSteps) >= totalExp){
+                totalWalk = addExp + currentSteps - totalExp;
             }else{
                 totalWalk = addExp + currentSteps;
             }
+
             calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
             calcExp = (int)calc;
             //Toast.makeText(getApplicationContext(), Integer.toString(Integer.parseInt((pref.getString("exp", ""))+addExp)/(Integer.parseInt(level.getText().toString())*10)), Toast.LENGTH_SHORT).show();
@@ -368,7 +375,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             expProgress.setProgress((int)calcExp);
 
             //경험치 다 채우면 레벨업
-            int curLevel = Integer.parseInt(level.getText().toString());
             while(totalWalk >= curLevel*100){
                 totalWalk -= curLevel*100;
                 curLevel+=1;
