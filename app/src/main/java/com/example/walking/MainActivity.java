@@ -362,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //걸음수만큼 경험치 증가
             // 기존은 이전렙-1 * 1000 을 넘으면 그만큼 빼서 계산하는걸로 했는데
             // 레벨은 누적이라 totalExp를 선언하고 사용했두
+            //나중에 1000 곱하는걸로 수정
             if((addExp+currentSteps) >= totalExp){
                 totalWalk = addExp + currentSteps - totalExp;
             }else{
@@ -396,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //목표 달성 시 포인트 지급
             int goal = Integer.parseInt(goalCount.getText().toString());
             //int goal = 100;
-            if(!getReward && currentSteps >= goal ){
+            if(!getReward && currentSteps >= 10 ){
                 reward.setEnabled(true);
                 gift.setVisibility(View.VISIBLE);
                 reward.setOnClickListener(new View.OnClickListener() {
@@ -412,6 +413,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         Toast.makeText(getApplicationContext(), addPoint + "포인트 획득!", Toast.LENGTH_SHORT).show();
                         reward.setEnabled(false);
                         gift.setVisibility(View.INVISIBLE);
+
+                        //걸음 수, 칼로리, 거리, 보상 획득 여부 초기화
+                        currentSteps = 0;
+                        counterSteps = 0;
+                        initSteps = 0;
+                        distValue = 0.00f;
+                        calorieValue = 0;
+                        addExp = 0;
+                        totalWalk = 0;
+                        getReward = false;
+
+                        //로컬에 0으로 초기화된 걸음수 저장
+                        SharedPreferences todaySteps = getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = todaySteps.edit();
+                        editor.putString("counterSteps", Integer.toString(counterSteps));
+                        editor.putString("initSteps", Integer.toString(initSteps));
+                        editor.commit();
+
+                        //로컬에 초기화된 거리와 칼로리 저장
+                        editor2.putString("today_walk", Integer.toString(currentSteps));
+                        editor2.putString("total_walk", Integer.toString(addExp));
+                        editor2.putString("getReward", Boolean.toString(getReward));
+                        editor2.putString("total_dist", String.format("%.2f", distValue));
+                        editor2.putString("total_kcal", Integer.toString(calorieValue));
+                        editor2.commit();
+
+                        count.setText(String.valueOf(currentSteps));
+                        distance.setText(String.format("%.2f", distValue));
+                        calorie.setText(String.valueOf(calorieValue));
+                        walkProgress.setProgress(0);
                     }
                 });
             }
