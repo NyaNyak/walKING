@@ -54,7 +54,7 @@ public class LogIn extends AppCompatActivity {
                     }
                     else {
                         result = new PutLogin().putLogin(id, password);
-                        if (result.containsKey("detail")){ //뭐가 문제지?
+                        if (result.containsKey("detail")){
                             Toast.makeText(getApplicationContext(), result.get("detail"), Toast.LENGTH_SHORT).show();
                         } else {
                             //입력한 아이디, 비밀번호 로컬에 저장
