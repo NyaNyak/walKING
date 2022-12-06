@@ -94,6 +94,8 @@ public class SignUp extends AppCompatActivity {
                         UserInfo save = new UserInfo();
                         save.userInfo(editor1, result);
 
+                        editor1.putString("nowExp", "0");
+
                         //로그인 성공 메시지
                         Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
 

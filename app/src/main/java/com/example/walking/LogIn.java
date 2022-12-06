@@ -74,6 +74,8 @@ public class LogIn extends AppCompatActivity {
                             //인자로 싹다 넘겨줌... 다시보니 pref는 따로 넘겨줄 필요가 없음 editor만 넘겨준다
                             save.userInfo(editor1, result);
 
+                            editor1.putString("nowExp", "0");
+
                             //로그인 성공 메시지
                             Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
                             //Toast.makeText(getApplicationContext(), result.get("user_name")+"님 환영합니다.", Toast.LENGTH_SHORT).show();
