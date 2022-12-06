@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //exp 계산
         totalWalk = Integer.parseInt(prefs.getString("exp", ""));
-        curExp = Integer.parseInt(prefs.getString("exp",""));
         addExp = Integer.parseInt(prefs.getString("total_walk", ""));
 
 
@@ -415,13 +414,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         gift.setVisibility(View.INVISIBLE);
 
                         //걸음 수, 칼로리, 거리, 보상 획득 여부 초기화
-                        currentSteps = 0;
+
                         counterSteps = 0;
                         initSteps = 0;
                         distValue = 0.00f;
                         calorieValue = 0;
-                        addExp = 0;
-                        totalWalk = 0;
+                        //addExp = 0;
+                        //totalWalk = 0;
                         getReward = false;
 
                         //로컬에 0으로 초기화된 걸음수 저장
@@ -432,8 +431,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         editor.commit();
 
                         //로컬에 초기화된 거리와 칼로리 저장
+
+                        editor2.putString("total_walk", Integer.toString(currentSteps));
+                        currentSteps = 0;
                         editor2.putString("today_walk", Integer.toString(currentSteps));
-                        editor2.putString("total_walk", Integer.toString(addExp));
                         editor2.putString("getReward", Boolean.toString(getReward));
                         editor2.putString("total_dist", String.format("%.2f", distValue));
                         editor2.putString("total_kcal", Integer.toString(calorieValue));
@@ -487,8 +488,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs.edit();
         editor2.putString("today_walk", Integer.toString(currentSteps));
-        editor2.putString("exp", Integer.toString(totalWalk));
-        editor2.putString("total_walk", Integer.toString(addExp));
+        editor2.putString("exp", prefs.getString("exp", ""));
+        editor2.putString("total_walk", prefs.getString("total_walk", ""));
         editor2.putString("total_dist", String.format("%.2f", distValue));
         editor2.putString("total_kcal", Integer.toString(calorieValue));
         editor2.commit();
