@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walking.ServerApi.PutMyBadge;
 import com.example.walking.ServerApi.PutSetBadge;
 
 import java.util.HashMap;
@@ -34,13 +35,20 @@ public class SelectBadge extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_badge);
 
+        SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
+
+        // 보유한 뱃지 변수
+        long myBadge = new PutMyBadge().putMyBadge(pref.getString("user_id",""));
+
         scaleUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
         scaleDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
 
         for (int i = 0; i < btnId.length; i++){
             final int index;
             index = i;
+
             btnArray[index] = (ImageButton) findViewById(btnId[index]);
+            if((myBadge & 1L << i) == 0) continue;
             btnArray[index].setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
