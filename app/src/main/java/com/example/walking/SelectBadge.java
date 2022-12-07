@@ -48,7 +48,10 @@ public class SelectBadge extends AppCompatActivity {
             index = i;
 
             btnArray[index] = (ImageButton) findViewById(btnId[index]);
-            if((myBadge & 1L << i) == 0) continue;
+            if((myBadge & 1L << i) == 0) {
+                btnArray[index].setImageResource(R.drawable.random);
+                continue;
+            }
             btnArray[index].setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
