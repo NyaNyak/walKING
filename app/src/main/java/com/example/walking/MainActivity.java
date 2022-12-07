@@ -187,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //totalWalk = addExp + currentSteps - (userLevel-1)*1000;
         level.setText(prefs.getString("level",""));
         Log.i("check", "walk is " + totalWalk);
-        calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
-        Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100);
+        calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
+        Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100);
         calcExp = (int)calc;
         exp.setText(Integer.toString(calcExp) + " percent");
         expProgress.setProgress((int)calcExp);
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             int curLevel = Integer.parseInt(level.getText().toString());
 
-            int totalExp = 50*(curLevel-1)*(curLevel); // 원래 100* ... /2 이라 그냥 50만 곱하기
+            int totalExp = 500*(curLevel-1)*(curLevel); // 원래 100* ... /2 이라 그냥 50만 곱하기
 
             //걸음수만큼 경험치 증가
             // 기존은 이전렙-1 * 1000 을 넘으면 그만큼 빼서 계산하는걸로 했는데
@@ -368,15 +368,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 totalWalk = addExp + currentSteps;
             }
 
-            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
+            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
             calcExp = (int)calc;
             //Toast.makeText(getApplicationContext(), Integer.toString(Integer.parseInt((pref.getString("exp", ""))+addExp)/(Integer.parseInt(level.getText().toString())*10)), Toast.LENGTH_SHORT).show();
             exp.setText(Integer.toString(calcExp) + " percent");
             expProgress.setProgress((int)calcExp);
 
             //경험치 다 채우면 레벨업
-            while(totalWalk >= curLevel*100){
-                totalWalk -= curLevel*100;
+            while(totalWalk >= curLevel*1000){
+                totalWalk -= curLevel*1000;
                 curLevel+=1;
             }
             SharedPreferences.Editor editor2 = pref.edit();
@@ -387,8 +387,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //totalWalk = addExp + currentSteps - (userLevel-1)*1000;
             level.setText(pref.getString("level",""));
             Log.i("check", "walk is " + totalWalk);
-            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100;
-            Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*100))*100);
+            calc = ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100;
+            Log.i("check", "level*100 is " + ((float) totalWalk/(Float.parseFloat(level.getText().toString())*1000))*100);
             calcExp = (int)calc;
             exp.setText(Integer.toString(calcExp) + " percent");
             expProgress.setProgress((int)calcExp);
@@ -396,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //목표 달성 시 포인트 지급
             int goal = Integer.parseInt(goalCount.getText().toString());
             //int goal = 100;
-            if(!getReward && currentSteps >= 10 ){
+            if(!getReward && currentSteps >= goal ){
                 reward.setEnabled(true);
                 gift.setVisibility(View.VISIBLE);
                 reward.setOnClickListener(new View.OnClickListener() {
@@ -485,6 +485,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         editor.putString("initSteps", Integer.toString(initSteps));
         editor.commit();
 
+        /*
         SharedPreferences prefs = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs.edit();
         editor2.putString("today_walk", Integer.toString(currentSteps));
@@ -494,9 +495,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         editor2.putString("total_kcal", Integer.toString(calorieValue));
         editor2.commit();
 
+
         float progress = (float)currentSteps/Float.parseFloat(goalCount.getText().toString())*100;
         //Toast.makeText(getApplicationContext(),Integer.toString((int)progress), Toast.LENGTH_SHORT).show();
-        walkProgress.setProgress((int)progress);
+        walkProgress.setProgress((int)progress);*/
 
         super.onPause();
     }

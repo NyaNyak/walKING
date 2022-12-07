@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:lineSpacingExtra="2dp"
             android:layout_marginTop="10dp"
-            android:text="목표 달성 보상은 매일 자정에 초기화되며,\n이미 수령한 보상은 목표를 재설정해도 받을 수 없습니다."
+            android:text="목표 달성 보상 수령 시 걸음수가 초기화됩니다."
             app:layout_constraintTop_toBottomOf="@id/pickerLayout"
             app:layout_constraintStart_toStartOf="@id/pickerLayout"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

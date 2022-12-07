@@ -51,21 +51,21 @@ public class PointShop extends AppCompatActivity {
         buy1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShop(10);
+                showDialogShop(1, 2);
             }
         });
         buy2 = (Button) findViewById(R.id.price2);
         buy2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShop(30);
+                showDialogShop(2, 4);
             }
         });
         buy3 = (Button) findViewById(R.id.price3);
         buy3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShop(50);
+                showDialogShop(4, 10);
             }
         });
         buy4 = (Button) findViewById(R.id.badgePrice);
@@ -78,7 +78,7 @@ public class PointShop extends AppCompatActivity {
     }
 
     //경험치 구매 전용
-    public void showDialogShop(float percent){
+    public void showDialogShop(int min, int max){
         TextView dialogText = dialog.findViewById(R.id.dialogText);
         dialogText.setText("구매하시겠습니까?");
         dialog.show();
@@ -96,8 +96,9 @@ public class PointShop extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                int getExp = Math.round(percent/100*1000);
-                Toast.makeText(getApplicationContext(),"경험치 " + getExp+" 획득!", Toast.LENGTH_SHORT).show();
+                int levelUp = 0;
+                int random;
+                Toast.makeText(getApplicationContext(),levelUp +" 레벨 up!", Toast.LENGTH_SHORT).show();
             }
         });
     }
