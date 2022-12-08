@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/dialog_background">
+    <ImageView
+        android:id="@+id/badgeResult"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/leopard_normal" />
+
+    <TextView
+        android:id="@+id/badgeName"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="Leopard normal"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:paddingTop="10dp" />
+
+    <TextView
+        android:id="@+id/ownedBadge"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="[보유 중인 뱃지]"
+        android:paddingTop="5dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:visibility="visible"/>
+    <TextView
+        android:id="@+id/getBadge"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="획득하였습니다!"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:visibility="visible"/>
+    <Button
+        android:id="@+id/badgeOk"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/badge_dialog_button"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+
+</LinearLayout>

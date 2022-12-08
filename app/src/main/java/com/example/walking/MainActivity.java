@@ -293,6 +293,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         goalCount.setText(pref.getString("walk_goal", ""));
+        level.setText(pref.getString("level", ""));
+        point.setText(pref.getString("point", ""));
         userProfile.setImageResource(BadgeList.badgeImg()[Integer.parseInt(pref.getString("set_badge","0"))]);
     }
 
