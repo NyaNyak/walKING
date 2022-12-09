@@ -250,6 +250,7 @@ public class PointShop extends AppCompatActivity {
                     badgeName.setText(result.get("name"));
                     if((result.get("check").equals("true"))){
                         ownedBadge.setVisibility(View.GONE);
+                        getBadge.setText("획득하였습니다!");
                         editor2.putString("point", Integer.toString(userPoint - 300));
                         editor2.commit();
                     }else{
