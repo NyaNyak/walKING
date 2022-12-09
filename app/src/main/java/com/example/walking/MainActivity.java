@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //로컬에 초기화된 거리와 칼로리 저장, 날짜 변경
         SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = pref.edit();
-        editor2.putString("total_walk", Integer.toString(currentSteps));
+        editor2.putString("total_walk", Integer.toString(Integer.parseInt(pref.getString("total_walk", ""))+currentSteps));
         currentSteps = 0;
         editor2.putString("today_walk", Integer.toString(currentSteps));
         editor2.putString("getReward", Boolean.toString(getReward));
@@ -398,13 +398,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             int curLevel = Integer.parseInt(level.getText().toString());
 
-            int totalExp = 500*(curLevel-1)*(curLevel); // 원래 100* ... /2 이라 그냥 50만 곱하기
+            int totalExp = 1000*(curLevel-1)*(curLevel); // 원래 100* ... /2 이라 그냥 50만 곱하기
 
             //걸음수만큼 경험치 증가
             // 기존은 이전렙-1 * 1000 을 넘으면 그만큼 빼서 계산하는걸로 했는데
             // 레벨은 누적이라 totalExp를 선언하고 사용했두
             //나중에 1000 곱하는걸로 수정
-            if((addExp+currentSteps) >= totalExp){
+            if((addExp + currentSteps) >= totalExp){
                 totalWalk = addExp + currentSteps - totalExp;
             }else{
                 totalWalk = addExp + currentSteps;
@@ -424,6 +424,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             SharedPreferences.Editor editor2 = pref.edit();
             editor2.putString("exp", Integer.toString(totalWalk));
             editor2.putString("level", Integer.toString(curLevel));
+            editor2.putString("today_walk", Integer.toString(currentSteps));
+            //editor2.putString("total_walk", pref.getString("exp",""));
             editor2.commit();
             userLevel = Integer.parseInt(pref.getString("level", ""));
             //totalWalk = addExp + currentSteps - (userLevel-1)*1000;
