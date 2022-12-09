@@ -134,6 +134,11 @@ public class UserPage extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
 
+                SharedPreferences todaySteps= getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = todaySteps.edit();
+                editor2.clear();
+                editor2.commit();
+
                 SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor1 = pref.edit();
 
