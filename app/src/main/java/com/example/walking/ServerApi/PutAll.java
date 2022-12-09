@@ -62,6 +62,13 @@ public class PutAll {
                 json.put("total_kcal", Integer.parseInt(pref.getString("total_kcal","0")));
                 json.put("set_badge", pref.getString("set_badge","0"));
 
+                // 필요한 값들 임시로 추가
+                json.put("rewardCount", 0);
+                json.put("getReward", false);
+                json.put("counterSteps", 0);
+                json.put("initSteps", 0);
+
+
                 RequestBody body = RequestBody.create(JSON, json.toString());
 
                 Request request = new Request.Builder()
