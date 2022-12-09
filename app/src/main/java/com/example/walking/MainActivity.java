@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //휴대폰 부팅 여부에 따라서 설정
     int initSteps = 0;
 
+    // 현재레벨-1까지의 경험치 총합
+    int totalExp;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -398,13 +401,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             int curLevel = Integer.parseInt(level.getText().toString());
 
-            int totalExp = 1000*(curLevel-1)*(curLevel); // 원래 100* ... /2 이라 그냥 50만 곱하기
+            totalExp = 500*(curLevel-1)*(curLevel); // 현재레벨 - 1 까지의 경험치 총 합
 
             //걸음수만큼 경험치 증가
             // 기존은 이전렙-1 * 1000 을 넘으면 그만큼 빼서 계산하는걸로 했는데
             // 레벨은 누적이라 totalExp를 선언하고 사용했두
             //나중에 1000 곱하는걸로 수정
-            if((addExp + currentSteps) >= totalExp){
+            if((addExp + currentSteps) > totalExp){
                 totalWalk = addExp + currentSteps - totalExp;
             }else{
                 totalWalk = addExp + currentSteps;
@@ -420,6 +423,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             while(totalWalk >= curLevel*1000){
                 totalWalk -= curLevel*1000;
                 curLevel+=1;
+                totalExp = 500*(curLevel-1)*(curLevel); // 현재레벨 - 1 까지의 경험치 총 합
             }
             SharedPreferences.Editor editor2 = pref.edit();
             editor2.putString("exp", Integer.toString(totalWalk));
