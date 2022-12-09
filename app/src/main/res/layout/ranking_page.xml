@@ -289,7 +289,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
                 <TextView
-                    android:id="@+id/level_4th"
+                    android:id="@+id/level4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
