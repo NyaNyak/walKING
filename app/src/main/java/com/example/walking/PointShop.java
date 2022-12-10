@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walking.ServerApi.PutLevelUp;
 import com.example.walking.ServerApi.PutNewBadge;
 
 import java.util.HashMap;
@@ -188,6 +189,9 @@ public class PointShop extends AppCompatActivity {
                     editor2.putString("level", Integer.toString(userLevel + levelUp));
                     editor2.putString("point", Integer.toString(userPoint - getPrice(min)));
                     editor2.commit();
+
+                    new PutLevelUp().putLevelUp(prefs.getString("user_id",""), levelUp, getPrice(min));
+
                     userLevel = Integer.parseInt(prefs.getString("level", ""));
                     if(userLevel > 2){
                         price = 50 + (userLevel - 1) * 10;

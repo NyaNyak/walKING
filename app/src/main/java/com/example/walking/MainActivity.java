@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walking.ServerApi.PutAll;
+import com.example.walking.ServerApi.PutReward;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -455,7 +456,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         SharedPreferences.Editor editor2 = pref.edit();
                         editor2.putString("point", Integer.toString(Integer.parseInt(point.getText().toString())+addPoint));
                         editor2.putString("getReward", Boolean.toString(getReward));
-                        editor2.commit();
+
+                        new PutReward().putReward(pref.getString("user_id",""), addPoint);
+
                         point.setText(pref.getString("point",""));
                         Toast.makeText(getApplicationContext(), addPoint + "포인트 획득!", Toast.LENGTH_SHORT).show();
                         reward.setEnabled(false);
