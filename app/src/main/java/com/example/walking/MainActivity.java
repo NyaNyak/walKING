@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         //[임시] 걸음 수 리셋 버튼(헤더 부분 타이틀 "KING" 클릭 리스너)
+        /*
         initInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 expProgress.setProgress(0);
             }
         });
+        */
 
         //액티비티 전환
         profilePage.setOnClickListener(new View.OnClickListener() {
