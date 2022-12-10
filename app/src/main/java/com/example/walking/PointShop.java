@@ -284,6 +284,7 @@ public class PointShop extends AppCompatActivity {
                     },1600);
                 }
                 else{
+                    dialog.dismiss();
                     Toast.makeText(getApplicationContext(),"포인트가 부족합니다.", Toast.LENGTH_SHORT).show();
                 }
 
