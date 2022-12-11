@@ -64,7 +64,7 @@ public class PutAll {
 
                 // 필요한 값들 임시로 추가
                 json.put("rewardCount", 0);
-                json.put("getReward", false);
+                json.put("getReward", pref.getString("getReward", ""));
                 json.put("counterSteps", 0);
                 json.put("initSteps", 0);
 

@@ -134,10 +134,10 @@ public class UserPage extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
 
-                SharedPreferences todaySteps= getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor2 = todaySteps.edit();
-                editor2.clear();
-                editor2.commit();
+                //SharedPreferences todaySteps= getSharedPreferences("todaySteps", Activity.MODE_PRIVATE);
+                //SharedPreferences.Editor editor2 = todaySteps.edit();
+                //editor2.clear();
+                //editor2.commit();
 
                 SharedPreferences pref = getSharedPreferences("user_info", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor1 = pref.edit();
@@ -146,7 +146,7 @@ public class UserPage extends AppCompatActivity {
                 System.out.println(result.get("detail"));
 
                 editor1.clear();
-                editor1.apply();
+                editor1.commit();
 
                 //앱 종료
                 finishAffinity();
