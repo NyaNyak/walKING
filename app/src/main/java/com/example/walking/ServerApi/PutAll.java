@@ -68,6 +68,9 @@ public class PutAll {
                 json.put("counterSteps", 0);
                 json.put("initSteps", 0);
 
+                // 날짜 서버로 보내기
+                json.put("date", pref.getString("date",""));
+
 
                 RequestBody body = RequestBody.create(JSON, json.toString());
 
