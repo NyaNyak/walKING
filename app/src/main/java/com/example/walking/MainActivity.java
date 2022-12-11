@@ -458,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         SharedPreferences.Editor editor2 = pref.edit();
                         editor2.putString("point", Integer.toString(Integer.parseInt(point.getText().toString())+addPoint));
                         editor2.putString("getReward", Boolean.toString(getReward));
+                        editor2.commit();
 
                         new PutReward().putReward(pref.getString("user_id",""), addPoint);
 
@@ -465,6 +466,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         Toast.makeText(getApplicationContext(), addPoint + "포인트 획득!", Toast.LENGTH_SHORT).show();
                         reward.setEnabled(false);
                         gift.setVisibility(View.INVISIBLE);
+
                     }
                 });
             }
